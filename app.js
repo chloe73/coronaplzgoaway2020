@@ -40,6 +40,7 @@ function handleDisconnect(){
 
 handleDisconnect();
 
+app.use(cors());
 app.use(express.static('public'));
 app.set('views', __dirname + '/public/images');
 app.set('views', __dirname + '/views');

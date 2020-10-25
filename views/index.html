@@ -2,9 +2,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/data.css">
+    <link rel="stylesheet" href="css/chart.css">
+    <link rel="stylesheet" href="css/notice.css">
+    <link rel="stylesheet" href="css/statement.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script>
+        function onPage(value){
+        console.log("!!");
+        $(".wrap").load('/page/' + value);
+      }
+    </script>
     <title>Document</title>
 </head>
 <body>
-    hello
-</body>
+    <div id="header">
+        <div class="logo" class="clearfix">
+            5조
+        </div>
+        <div class="menu" class="clearfix">
+            <ul>
+                <li onclick="onPage('data')"><a>Data</a></li>
+                <li onclick="onPage('chart')"><a>Chart</a></li>
+                <li class="me" onclick="onPage('statement')"><a>Statement</a></li>
+                <li onclick="onPage('notice')"><a>Notice</a></li>
+            </ul>
+        </div>
+        <div class="calendar" class="clearfix">
+            <img src="images/calendar-01.png"; alt="" class="cal">
+        </div>
+    </div>
+    <div class="wrap">
+        
+    </div>
+  </body>
 </html>

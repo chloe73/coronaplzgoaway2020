@@ -1,0 +1,81 @@
+/* reset */
+
+* {
+    margin: auto ;
+    padding: auto 0;
+}
+
+* {
+    list-style: none;
+}
+
+.clearfix ::before, ::after {
+    display: block;
+    content: '';
+    clear: both;
+}
+
+
+/* wrap */
+
+/* header */
+#header {
+    height: 100px;
+    width: 1500px;
+}
+
+/* logo */
+
+#header > div.logo {
+    float: left;
+    height: 100px;
+    width: 300px;
+    padding-top: 40px;
+}
+
+/* menu */
+
+#header > div.menu {
+    float: left;
+    padding-left: 400px;
+}
+
+.menu > ul >li {
+    float: left;
+    text-align: center;
+    width: 150px;
+    padding-top: 50px;
+    font-size: 20px;
+    cursor:pointer;
+}
+
+.menu > ul >li a {
+    display: block;
+}
+
+.menu > ul >li a:hover {
+    background: rgba(11,34,132,100);
+    color: #fff;
+    border-radius: 10px;
+}
+
+
+/* calendar */
+
+#header > div.calendar {
+    float: right;
+    width: 100px;
+    height: 100px;
+    padding-top: 35px;
+}
+
+#header > div.calendar .cal {
+    width: 50px;
+    height: 50px;
+    cursor:pointer;
+}
+
+
+.wrap{
+  width:100%;
+}
