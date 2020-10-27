@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <script>
+        var today = new Date();
+        var month = today.getMonth();
+        var days = today.getDate();
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type : 'bar',
+            data :{
+                labels : [
+                month + "/" + (days-7),
+                month + "/" + (days-6),
+                month + "/" + (days-5),
+                month + "/" + (days-4),
+                month + "/" + (days-3),
+                month + "/" + (days-2),
+                month + "/" + (days-1),
+                month + "/" + days
+                ],
+                datasets: [{
+                    label : '일일 확진자 그래프',
+                    backgroundColor: 'rgb(255,99,132)',
+                    borderColor : 'rgb(255,99,132)',
+                    data:[8.10,5,2,20,30,45,20,30]
+                }]
+            },
+            options:{
+                legend:{
+                    display:false
+                },
+                scales:{
+                    xAxes:[{
+                        barPercentage:0.4
+                    }]
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class ="chartWrap">
+        <canvas id="myChart"></canvas> 
+    </div>
+    
+</body>
+</html>
