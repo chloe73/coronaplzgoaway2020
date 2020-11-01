@@ -46,6 +46,7 @@ app.set('views', __dirname + '/public/images');
 app.set('views', __dirname + '/views');
 app.set('views engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true}));
 
