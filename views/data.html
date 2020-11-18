@@ -1,3 +1,86 @@
-<div class="dataWrap">
-  <a>123123</a>
+<head>
+  <script>
+
+      var ctx = document.getElementById('myChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['확진','검사중'],
+          datasets: [{
+            backgroundColor: ['#0b2284','#d3d3d3'],
+            data: [10, 20],
+            borderColor:"#f2f2f2"
+          }]
+        },
+        // Configuration options go here
+        options: {
+          legend: {
+            display: false,
+          }
+        }
+      });
+
+  </script>
+</head>
+<div id="dataWrap">
+
+  <!-- 환자 현황 -->
+  <div id="header">
+      <h5 class="header_title">환자현황
+        <h2>&nbsp&nbsp(2020년 6월 12일 기준)
+      </h5>
+
+      <div class="headerTitleWrap">
+        <div class="confirmCountWrap">
+          <a>확진환자 (n)</a>
+        </div>
+
+        <div class="confirmCountWrap">
+          <a>검사중 (n)</a>
+        </div>
+      </div>
+
+      <div class="headerContentsWrap">
+
+      </div>
+  </div>
+
+  <!-- 검사 현황 -->
+  <div id="data">
+    <div class="dataContentWrap">
+      <a>검사현황</a>
+      <div class="dataContentSubWrap">
+
+      </div>
+    </div>
+    <div class="dataContentWrap">
+      <div id="chartWrap">
+        <canvas id="myChart"></canvas>
+      </div>
+
+      <div class="chartDataWrap">
+        <div class="dataWrap">
+          <div class="barData" style="background:#0b2284">
+            <p style="color:#ffffff">확진</p>
+          </div>
+          <a>(0000명)</a>
+        </div>
+
+        <div class="dataWrap">
+          <div class="barData" style="background:#d3d3d3">
+            <p style="color:#3d3d3d">검사중</p>
+          </div>
+          <a >(0000명)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 시도별 확진자 현황 -->
+  <div id="map">
+    <div class="titleWrap">
+      <p>시도별 확진자 현황</p>
+    </div>
+  </div>
+
 </div>
