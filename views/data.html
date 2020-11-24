@@ -1,7 +1,8 @@
 <head>
   <script>
 
-      var ctx = document.getElementById('myChart').getContext('2d');
+      var ctx = document.getElementById('checkChart').getContext('2d');
+      var ctx3 = document.getElementById('confirmChart').getContext('2d');
       new Chart(ctx, {
         type: 'pie',
         data: {
@@ -19,6 +20,25 @@
           }
         }
       });
+
+      new Chart(ctx3, {
+        type: 'pie',
+        data: {
+          labels: ['확진', '검사중'],
+          datasets: [{
+            backgroundColor:['#0b2284', '#d3d3d3'],
+            data:[10,20],
+            borderColor:'#f2f2f2'
+          }]
+        },
+        options: {
+          legend:{
+            display: false,
+          }
+        }
+      });
+
+      $(".mapWrap").load("/page/Republic_korea_2020")
 
   </script>
 </head>
@@ -55,7 +75,7 @@
     </div>
     <div class="dataContentWrap">
       <div id="chartWrap">
-        <canvas id="myChart"></canvas>
+        <canvas id="checkChart"></canvas>
       </div>
 
       <div class="chartDataWrap">
@@ -81,6 +101,54 @@
     <div class="titleWrap">
       <p>시도별 확진자 현황</p>
     </div>
-  </div>
+    <div class="mapWrap"></div>
 
+    <div class="infoWrap">
+      <div class="titleWrap">
+        <a class="info_title01">전국</a> <a class="info_title02">지역발생비율</a>
+      </div>
+
+      <div class="chartWrap">
+        <canvas id="confirmChart">a/canvas>
+      </div>
+
+      <table class="infoTable">
+        <tr>
+          <td class="title"><a>누적 확진환자</a></td>
+          <td class="value"><a>0명</a></td>
+        </tr>
+        <tr>
+          <td class="title" style="color:#10b4e9"><a>전면대비 증감</a></td>
+          <td class="value" style="color:#10b4e9"><a>0명</a></td>
+        </tr>
+
+        <tr>
+          <td class="title"><a>격리중</a></td>
+          <td class="value"><a>0명</a></td>
+        </tr>
+
+        <tr>
+          <td class="title"><a>누적 격리해제</a></td>
+          <td class="value"><a>0명</a></td>
+        </tr>
+
+        <tr>
+          <td class="title"><a>누적 사망자</a></td>
+          <td class="value"><a>0명</a></td>
+        </tr>
+      </table>
+
+      <table class="linkTable">
+        <tr style="background:#006666;">
+          <td><a>공적마스크 일일 공급현황</a></td>
+        </tr>
+        <tr style="background:#00689b;">
+          <td><a>선별진료소 및 국민안심병원 찾기</a></td>
+        </tr>
+        <tr style="background:#3889cb">
+          <td><a>대상별 피해자원 정책</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
