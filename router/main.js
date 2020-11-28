@@ -60,7 +60,15 @@ module.exports = function(app,connection)
         const category = req.params.category;
         console.log("category : " , category);
         res.render(category +'.html');
-});
+    });
+
+    app.get('/getRecent', function(req, res) {
+        mySql_Query = "SELECT date, checkup, confirm, death from days_logtable ORDER BY date DESC limit 1;"
+        connection.query(mySql_Query, function(err, rows) {
+            if(err) throw err;
+            res.send(rows);
+        });
+    });
 
     
 }

@@ -53,15 +53,33 @@
 #CD50 {
     fill: #f1c40f;
 }
-.TEXT {
-    fill: #ffffff;
-    font-size: 16;
+.CITY_NAME{
+    fill: #000000;
+    font-size: 14;
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
+.CITY_COUNT{
+    fill: #000000;
+    font-size: 17;
     font-weight: bold;
     text-anchor: middle;
     alignment-baseline: middle;
 }
+
+.ACC_COUNT{
+    fill: #000000;
+    font-size: 12;
+    text-anchor: middle;
+    alignment-baseline: middle;
+}
+
+.BACKGROUND{
+    fill: #FFFFFF;
+}
 </style>
-<svg style='border-radius: 5px; background:#f2f2f2; overflow:visible' height="1107" width="700" xmlns="http://www.w3.org/2000/svg">
+<svg style='border-radius: 5px; overflow:visible' height="1107" width="700" xmlns="http://www.w3.org/2000/svg">
   <defs>
       <filter id="dropshadow">
           <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
@@ -90,21 +108,93 @@
   <path id="CD47" class="OUTLINE" d =" M 560 528 l 7 2 5 -4 3 -4 3 -4 1 -1 0 0 3 -4 3 2 2 6 -1 8 -2 3 -1 0 0 0 -1 4 0 4 0 0 -1 0 0 -1 0 1 0 0 -2 2 -2 3 0 2 1 0 0 0 1 4 0 4 -1 -1 -1 1 0 0 1 4 -1 3 0 0 0 0 0 0 0 1 -1 3 0 3 0 0 0 1 -1 -1 -1 4 -1 8 -2 7 -1 6 -2 4 -2 4 -7 -3 -1 0 -7 -2 -4 2 -3 2 -6 1 -4 -7 -3 -3 -4 -3 -5 0 -9 1 -4 1 -4 2 -2 4 0 1 -1 1 0 2 2 3 -3 0 -4 3 -1 -1 -1 0 -3 4 -7 0 -5 -4 -3 0 -3 1 -4 3 -4 5 -5 1 -6 3 -8 0 -7 -2 -8 -1 -7 2 -6 -3 -3 -3 -3 -3 -1 -7 0 -5 1 -6 5 -3 6 0 3 5 3 -1 4 -2 4 -2 0 -8 2 -7 3 -6 1 -2 0 -4 2 1 4 -4 -1 -7 -2 -9 0 -4 -3 -7 -3 -1 -9 0 -5 1 -3 3 -7 4 -2 2 -1 -1 -2 -2 0 7 -3 7 -2 4 -1 0 -3 -3 -2 -7 -5 1 -3 3 -3 4 -2 5 0 5 6 0 8 4 0 5 -8 1 -3 2 -3 5 1 5 5 4 0 5 -6 0 -5 2 1 3 4 4 0 8 -5 -3 -3 -3 -7 -1 -8 1 -3 2 -2 0 -3 -2 -5 -3 2 -3 0 0 1 0 2 -4 -1 -7 -2 -4 -3 -3 -5 -4 -2 -4 -1 -4 -1 0 -1 0 -5 -2 -8 0 -7 -2 -5 -3 -1 0 -3 1 -1 -4 -4 -3 -4 -5 4 -7 -3 -7 -2 -4 0 0 0 -1 -2 -4 4 -2 4 -3 5 -2 3 -6 1 -3 0 -2 0 -1 3 -4 1 -6 0 -8 7 0 4 1 -1 -2 -2 -6 -2 -5 -6 -1 -3 3 -2 0 -1 -1 -1 0 -2 -2 -4 -3 -2 -3 -2 3 -6 0 -1 -6 3 -5 3 -4 0 -3 -1 0 1 -2 -3 -3 1 -3 2 -3 -2 -2 0 -2 1 -4 0 -1 0 0 0 -1 0 0 0 0 0 0 0 -1 0 -2 3 -3 0 -5 -4 -3 -2 -5 -7 -3 -1 -5 6 -2 1 -1 0 0 0 -4 4 -4 0 1 2 4 4 5 2 1 -1 -1 1 -2 1 -4 -1 -5 -4 -3 -4 -1 0 -1 0 0 1 -1 3 -1 6 -2 3 -6 2 1 3 2 4 -2 1 0 3 3 5 0 -1 -2 -3 -4 1 -8 1 -5 3 -1 3 3 1 -2 4 -4 3 -2 1 1 5 2 6 0 2 -6 3 -4 0 0 4 2 4 4 4 3 7 3 7 -1 5 -1 2 -6 -2 -8 3 -7 2 -5 4 -4 4 -2 4 -4 4 -3 3 -5 5 -3 0 -1 3 1 2 -2 4 -1 5 3 4 1 6 1 1 -7 3 -4 2 0 4 2 6 5 7 -1 4 -6 4 -1 3 2 4 0 5 0 1 1 1 -1 3 2 3 0 3 -5 7 1 3 2 5 4 6 3 5 0 -1 0 0 -1 0 -3 0 -3 3 -4 3 -4 5 -2 5 -4 1 -1 1 1 1 -1 1 1 0 0 0 0 0 0 1 0 0 -1 1 2 1 4 2 5 6 7 -1 3 0 1 0 1 -1 2 1 3 0 4 0 1 0 1 -1 1 1 1 0 0 0 1 1 5 0 6 1 5 -1 -1 0 4 4 7 2 3 -1 0 1 1 1 4 3 7 0 9 0 6 -2 5 -1 -2 -1 1 -3 5 -2 6 0 7 4 8 1 5 0 2 0 0 1 2 -1 2 0 1 0 0 0 0 0 0 -1 3 0 7 -2 8 -3 6 -2 3 -1 6 -1 7 0 7 1 8 -1 4 0 -1 1 4 2 3 1 5 1 5 6 3 0 0 0 3 -4 4 -4 3 -1 0 -2 4 6 2 z M 797 205 l 2 1 1 0 -1 3 0 6 1 2 -3 2 -3 3 -6 0 -4 -2 -3 -5 1 -5 6 -2 4 -2 0 0 2 0 z " />
   <path id="CD48" class="OUTLINE" d =" M 307 751 l 4 2 0 5 -1 4 0 0 -1 0 -1 4 1 4 1 0 -1 1 3 3 3 4 3 0 -1 -1 0 0 4 -2 7 -1 4 1 0 0 1 1 0 5 0 7 -1 4 -1 4 1 2 0 0 0 0 0 0 1 0 -1 1 0 0 0 0 -1 1 -2 -1 -1 1 -2 -3 -4 1 -6 -3 -2 -8 -6 2 -2 6 -6 -1 -2 -6 1 -4 -1 1 -1 -4 -2 -3 -2 -4 0 -7 2 -3 0 -1 0 0 0 -2 0 0 0 -1 0 -1 3 -1 2 -5 z M 441 731 l 3 1 1 2 -2 3 0 1 0 0 0 1 -1 0 0 4 3 3 1 5 0 4 0 0 -1 2 -2 3 -1 3 2 0 -1 1 2 -1 3 -2 3 -1 -1 1 -2 5 -1 4 -2 -1 -1 1 -1 1 3 2 0 7 -2 -3 -1 0 0 0 0 0 -1 1 -3 -1 -2 3 -3 4 -1 3 4 4 3 0 -1 1 -1 1 0 -1 -1 0 -1 0 -1 0 -4 2 -6 1 -1 -3 0 0 -1 0 -1 0 2 -5 -1 -3 -2 1 -2 0 -1 -3 5 -3 0 -6 0 -4 0 1 -1 -2 -2 1 0 1 0 0 -3 2 -4 2 -1 3 0 0 -1 0 -2 -4 -3 -3 -1 -4 0 -4 1 -1 0 0 3 -3 4 -4 1 0 0 0 0 0 3 3 4 1 0 -1 4 1 4 0 -1 -2 1 -1 -1 0 0 0 0 0 -3 -4 2 -5 5 -1 3 -5 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 -1 -1 1 0 1 1 0 -4 z M 429 693 l -4 1 -3 2 -2 4 1 3 0 0 0 1 2 3 0 3 0 0 0 1 -1 -1 -1 0 -1 1 4 2 3 6 2 2 -2 1 3 2 -2 1 0 0 0 0 -3 1 -4 1 1 -2 1 -1 -4 -1 3 -3 -4 -1 -3 -4 -3 1 -1 2 0 0 -1 0 0 0 -1 0 -1 -1 -2 -1 -1 2 0 0 -1 0 -3 -1 0 5 -3 2 -3 2 -7 4 0 4 2 -3 5 -2 4 -2 0 -1 0 -1 1 -1 1 1 1 0 0 0 1 -1 2 1 0 0 -1 4 1 4 0 0 0 0 1 -1 0 1 0 0 0 1 2 1 -4 3 -2 2 -1 0 0 0 -1 0 0 0 0 0 0 0 0 0 -4 -1 -1 2 4 2 -2 3 -1 5 -1 7 1 6 1 -2 0 0 1 0 1 -1 0 0 0 0 -1 -1 1 0 0 0 0 -2 -1 -1 4 2 1 5 -1 -2 -1 4 -2 4 -4 2 -6 0 0 -4 5 -1 -5 -3 -1 -3 -1 2 0 -1 -1 2 -2 -1 -1 -1 -2 1 -2 -1 -1 1 -1 -1 -1 0 1 0 -1 -3 4 -1 4 -1 0 -1 -3 -5 -1 -4 -1 1 0 -1 -1 0 0 0 -1 2 -2 3 0 3 0 0 0 0 0 0 0 0 0 0 -4 2 -2 -1 0 0 0 -1 -1 -1 1 -1 0 -1 0 0 0 0 0 0 0 -1 0 0 0 0 0 0 -4 0 -6 0 -2 7 -6 1 -4 2 0 1 -3 -4 -3 -2 3 -1 -2 0 -2 0 0 -1 -1 0 1 0 -1 1 0 0 -4 -1 -5 -4 -1 -3 0 1 2 -2 1 -2 -1 -2 0 -4 1 -2 0 0 0 0 -2 -2 0 -5 1 -4 2 -3 -3 2 -2 5 -1 4 0 0 0 0 0 0 0 0 -2 0 0 0 1 -3 -2 0 1 0 -3 1 2 2 2 4 0 3 -1 0 0 1 -1 1 1 0 0 0 0 -1 -1 0 -1 -1 -2 2 -3 -2 0 0 -1 0 0 0 0 1 0 0 -3 1 -1 -2 0 0 0 -2 -4 -3 1 3 -1 2 1 0 0 0 -1 1 1 0 0 1 0 0 0 0 0 0 0 0 0 1 -2 1 -4 5 -5 0 -2 -2 0 0 0 0 -1 1 -5 2 -4 1 0 0 -1 -1 -2 -5 3 -6 0 -3 -1 -2 -3 -5 -4 -3 -3 -4 -4 -4 0 -4 -4 -6 -5 -3 -4 -6 0 -8 -1 -4 -2 -3 -3 -8 4 -4 2 -3 -1 -4 0 0 0 0 0 -1 2 -3 3 -5 3 -3 1 -5 -4 -3 0 -5 -2 -8 -6 -6 2 -8 1 -3 2 -4 1 -8 2 -7 3 -3 0 -5 2 -8 5 -3 3 -4 3 -6 5 -2 6 -2 3 -2 4 -3 3 -5 3 -2 4 5 4 3 1 4 3 -1 1 0 5 3 7 2 8 0 5 2 1 0 1 0 1 4 2 4 5 4 3 3 2 4 1 7 -2 4 -1 0 0 0 -2 3 5 3 3 2 2 0 3 -2 8 -1 7 1 3 3 5 3 7 -1 7 -3 5 0 2 -3 3 -7 0 5 1 7 3 3 3 3 6 3 7 -2 8 1 7 2 8 0 6 -3 5 -1 4 -5 4 -3 3 -1 3 0 5 4 7 0 0 8 -5 5 4 4 3 2 2 0 0 0 1 0 3 -1 1 3 5 3 4 3 2 3 4 5 6 2 4 1 1 7 -2 3 0 0 0 3 -3 2 -7 0 -3 6 -1 5 -4 1 -6 3 -1 3 -3 -1 -2 0 -1 4 -4 6 -7 1 -6 2 -5 1 -1 6 0 5 -9 0 -4 1 2 2 5 4 1 3 -2 2 -3 2 -4 1 2 -2 0 -1 -4 -1 -2 6 -3 -2 -1 -3 -3 1 -2 -1 -2 0 -1 1 0 -3 -2 -6 -2 3 -1 1 0 -1 -1 -1 0 -1 -1 1 -3 -3 -3 2 1 0 -1 0 1 1 -1 0 -2 -5 -2 -6 4 -6 z " />
   <path id="CD50" class="OUTLINE" d =" M 115 1034 l 5 2 3 2 5 3 6 2 3 5 -1 4 0 0 1 0 0 0 1 1 2 1 -2 1 3 0 -1 7 -2 1 -3 7 -4 4 -3 5 -3 5 -5 4 -5 0 -3 1 0 0 0 0 0 0 -1 1 -2 1 0 1 -3 1 -8 2 -4 0 0 0 -2 0 -3 2 -6 3 -7 0 -8 1 -7 1 -7 -1 -8 0 -7 0 -6 1 -3 5 -6 -1 -3 -4 -4 -3 -5 -2 -2 -4 -2 -8 2 -7 3 -4 1 0 1 0 3 -3 4 -3 3 -5 3 -4 4 -2 6 -4 4 -2 5 -1 6 -1 7 -3 4 -2 4 -1 5 -1 -1 1 4 -1 7 -1 6 -2 3 -3 1 1 0 0 1 0 0 1 0 0 1 0 2 -1 2 0 1 0 0 0 1 0 6 -1 z " />
-  </g><g filter="url(#dropshadow)"><text id="LCD11" class="TEXT" x="156" y="214">서울특별시</text>
-  <text id="LCD26" class="TEXT" x="503" y="695">부산광역시</text>
-  <text id="LCD27" class="TEXT" x="418" y="567">대구광역시</text>
-  <text id="LCD28" class="TEXT" x="67" y="177">인천광역시</text>
-  <text id="LCD29" class="TEXT" x="127" y="707">광주광역시</text>
-  <text id="LCD30" class="TEXT" x="221" y="463">대전광역시</text>
-  <text id="LCD31" class="TEXT" x="531" y="622">울산광역시</text>
-  <text id="LCD41" class="TEXT" x="216" y="245">경기도</text>
-  <text id="LCD42" class="TEXT" x="370" y="179">강원도</text>
-  <text id="LCD43" class="TEXT" x="294" y="381">충청북도</text>
-  <text id="LCD44" class="TEXT" x="105" y="449">충청남도</text>
-  <text id="LCD45" class="TEXT" x="179" y="592">전라북도</text>
-  <text id="LCD46" class="TEXT" x="138" y="764">전라남도</text>
-  <text id="LCD47" class="TEXT" x="447" y="460">경상북도</text>
-  <text id="LCD48" class="TEXT" x="367" y="672">경상남도</text>
-  <text id="LCD50" class="TEXT" x="76" y="1070">제주특별자치도</text>
+  </g><g filter="url(#dropshadow)">
+
+  <rect class="BACKGROUND" x="480" y="700" width="70" height="80"></rect>
+  <text id="LCD26" class="CITY_NAME" x="505" y="715">부산</text>
+  <text id="LCD26" class="CITY_COUNT" x="505" y="740">0명</text>
+  <text id="LCD26" class="ACC_COUNT" x="505" y="765">(+0)</text>
+
+  <rect class="BACKGROUND" x="155" y="175" width="70" height="80"></rect>
+  <text id="LCD11" class="TEXT" x="165" y="195">서울</text>
+  <text id="LCD26" class="TEXT" x="165" y="220">0명</text>
+  <text id="LCD26" class="TEXT" x="165" y="245">(+0)</text>
+
+  <rect class="BACKGROUND" x="425" y="480" width="80" height="80"></rect>
+  <text id="LCD27" class="TEXT" x="435" y="500">대구</text>
+  <text id="LCD26" class="TEXT" x="435" y="525">0명</text>
+  <text id="LCD26" class="TEXT" x="435" y="550">(+0)</text>
+
+  <rect class="BACKGROUND" x="10" y="160" width="70" height="80"></rect>
+  <text id="LCD28" class="TEXT" x="20" y="180">인천</text>
+  <text id="LCD26" class="TEXT" x="20" y="205">0명</text>
+  <text id="LCD26" class="TEXT" x="20" y="230">(+0)</text>
+
+  <rect class="BACKGROUND" x="140" y="680" width="70" height="80"></rect>
+  <text id="LCD29" class="TEXT" x="150" y="700">광주</text>
+  <text id="LCD26" class="TEXT" x="150" y="725">0명</text>
+  <text id="LCD26" class="TEXT" x="150" y="750">(+0)</text>
+
+  <rect class="BACKGROUND" x="220" y="400" width="70" height="80"></rect>
+  <text id="LCD30" class="TEXT" x="230" y="420">대전</text>
+  <text id="LCD26" class="TEXT" x="230" y="445">0명</text>
+  <text id="LCD26" class="TEXT" x="230" y="470">(+0)</text>
+
+  <rect class="BACKGROUND" x="540" y="620" width="70" height="80"></rect>
+  <text id="LCD31" class="TEXT" x="550" y="640">울산</text>
+  <text id="LCD26" class="TEXT" x="550" y="665">0명</text>
+  <text id="LCD26" class="TEXT" x="550" y="690">(+0)</text>
+
+  <rect class="BACKGROUND" x="150" y="60" width="70" height="80"></rect>
+  <text id="LCD41" class="TEXT" x="160" y="80">경기</text>
+  <text id="LCD26" class="TEXT" x="160" y="105">0명</text>
+  <text id="LCD26" class="TEXT" x="160" y="130">(+0)</text>
+
+  <rect class="BACKGROUND" x="320" y="120" width="70" height="80"></rect>
+  <text id="LCD42" class="TEXT" x="330" y="140">강원</text>
+  <text id="LCD26" class="TEXT" x="330" y="165">0명</text>
+  <text id="LCD26" class="TEXT" x="330" y="190">(+0)</text>
+
+  <rect class="BACKGROUND" x="250" y="270" width="70" height="80"></rect>
+  <text id="LCD43" class="TEXT" x="260" y="290">충북</text>
+  <text id="LCD26" class="TEXT" x="260" y="315">0명</text>
+  <text id="LCD26" class="TEXT" x="260" y="340">(+0)</text>
+
+  <rect class="BACKGROUND" x="40" y="400" width="70" height="80"></rect>
+  <text id="LCD44" class="TEXT" x="50" y="420">충남</text>
+  <text id="LCD26" class="TEXT" x="50" y="445">0명</text>
+  <text id="LCD26" class="TEXT" x="50" y="470">(+0)</text>
+
+  <rect class="BACKGROUND" x="120" y="320" width="70" height="80"></rect>
+  <text id="LCD44" class="TEXT" x="130" y="340">세종</text>
+  <text id="LCD26" class="TEXT" x="130" y="365">0명</text>
+  <text id="LCD26" class="TEXT" x="130" y="390">(+0)</text>
+
+  <rect class="BACKGROUND" x="160" y="530" width="70" height="80"></rect>
+  <text id="LCD45" class="TEXT" x="170" y="550">전북</text>
+  <text id="LCD26" class="TEXT" x="170" y="575">0명</text>
+  <text id="LCD26" class="TEXT" x="170" y="600">(+0)</text>
+
+  <rect class="BACKGROUND" x="30" y="770" width="70" height="80"></rect>
+  <text id="LCD46" class="TEXT" x="40" y="790">전남</text>
+  <text id="LCD26" class="TEXT" x="40" y="815">0명</text>
+  <text id="LCD26" class="TEXT" x="40" y="840">(+0)</text>
+
+  <rect class="BACKGROUND" x="400" y="350" width="80" height="80"></rect>
+  <text id="LCD47" class="TEXT" x="410" y="370">경북</text>
+  <text id="LCD26" class="TEXT" x="410" y="395">0명</text>
+  <text id="LCD26" class="TEXT" x="410" y="420">(+0)</text>
+
+  <rect class="BACKGROUND" x="320" y="650" width="70" height="80"></rect>
+  <text id="LCD48" class="TEXT" x="330" y="670">경남</text>
+  <text id="LCD26" class="TEXT" x="330" y="695">0명</text>
+  <text id="LCD26" class="TEXT" x="330" y="720">(+0)</text>
+
+  <rect class="BACKGROUND" x="120" y="1000" width="70" height="80"></rect>
+  <text id="LCD50" class="TEXT" x="130" y="1020">제주</text>
+  <text id="LCD26" class="TEXT" x="130" y="1045">0명</text>
+  <text id="LCD26" class="TEXT" x="130" y="1070">(+0)</text>
+
+
   </g>
 </svg>
