@@ -1,0 +1,63 @@
+<head>
+  <script>
+
+    // 뒤로가기 이벤트가 생겼을때, 페이지 이동이 화면을 바꾼다.
+    // Statement comment 화면에서 뒤로가기 -> statement 제목목록(statement.html) 화면으로 이동
+    history.pushState(null, null, location.href);
+    window.onpopstate = function(event) {
+      var menu = sessionStorage.getItem("sideMenu");
+      switch(menu){
+        case "STATE":
+          $(".wrap").load('/page/statement');
+          break;
+      }
+    };
+
+    // 세션에 저장되어 있는 제목의 ID값을 가져온다.
+    var statementID = sessionStorage.getItem("statementID");
+
+    // statement 제목 ID를 가지고, 서버에 제목 ID에 맞는 내용을 요청한다.
+    jQuery.ajax({
+       type: "GET",
+       url: "/getComment",
+       data: {
+         id:statementID,
+         table : "statement_table"
+       },
+       success: function(result){},
+       error: function(error){console.log("error : " , error);}
+    }).done(function(result){
+      // DB에 등록된 제목 개수만큼 반복해서 html Table을 그린다.
+      result.forEach((item, i) => {
+        $(".stateTable").append("<tr class='title'></tr>");
+        $(".title").append("<td class='tb_title' style='text-align:left;'>" + item.title +"</td>");
+        $(".title").append("<td class='tb_date'>" + getFormatDate(new Date(item.date)) +"</td>");
+
+        $(".stateTable").append("<tr class='comment' ></tr>");
+        $(".comment").append("<td colspan='2' class='comment_tr' style='text-align:left;'></td>");
+        $(".comment_tr").append(item.comment);
+      });
+    });
+
+    // DB의 날짜를 한국형식(YYYY-MM-HH)로 리턴해주는 함수.
+    function getFormatDate(date){
+      var year = date.getFullYear();
+      var month = (1 + date.getMonth());
+      var day = date.getDate();
+      month = month >= 10 ? month : '0' + month;
+      day = day >= 10 ? day : '0' + day;
+      return  year + '-' + month + '-' + day;
+    }
+
+
+  </script>
+</head>
+
+<div class="statementWrap">
+  <div class="header">
+    <p>코로나19팩트</p>
+  </div>
+
+  <table class="stateTable">
+  </table>
+</div>

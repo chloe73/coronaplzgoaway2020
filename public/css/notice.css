@@ -1,6 +1,179 @@
-.dataWrap {
-    height:100%;
-    width:100%;
-    background:#c2c2c2;
-  }
-  
+.noticeWrap {
+  position: relative;
+  width:90%;
+  height: 100%;
+}
+
+
+/* 사이드메뉴 디자인 */
+.sideMenu{
+  position: absolute;
+  left:0;
+  top:50px;
+  height:300px;
+  width:200px;
+  font-family: 'ON-IGothic',AppleGothic,sans-serif;
+}
+
+.sideMenu > ul > li:first-child{
+  height:50px;
+  text-align: center;
+  border-bottom: #606060 solid 3px;
+}
+
+.sideMenu > ul > li:first-child > a{
+  font-size: 20px;
+}
+
+.sideMenu > ul > li{
+  height:50px;
+  text-align: center;
+  border-bottom: #c2c2c2 solid 1px;
+  cursor: pointer;
+}
+
+.sideMenu > ul > li > a{
+  height:50px;
+  line-height: 50px;
+}
+
+.noticeContents{
+  position: absolute;
+  left:200px;
+  top:30px;
+  height:300px;
+  width:-webkit-calc(100% - 200px);
+}
+
+
+
+/* CDC 디자인*/
+.noticeContents > .header{
+  position: absolute;
+  top:30px;
+  left:5%;
+  width:90%;
+  height:70px;
+  border-bottom: #c2c2c2 solid 1px;
+}
+
+.noticeContents > .header > img{
+  float:left;
+}
+
+.noticeContents > .cdcNoticeTable {
+    font-family: 'ON-IGothic',AppleGothic,sans-serif;
+    position: absolute;
+    top:160px;
+    width:80%;
+    left:10%;
+    text-align: center;
+    border-top: #000000 solid 2px;
+    margin-bottom: 50px;
+}
+.noticeContents > .cdcNoticeTable > tbody > tr:first-child{
+  height:53px;
+  border-bottom: #a0a0a0 solid 1.5px;
+  cursor: default;
+}
+.noticeContents > .cdcNoticeTable > tbody > tr{
+  height:50px;
+  border-bottom: #c3c3c3 solid 1.5px;
+  cursor: pointer;
+}
+.noticeContents > .cdcNoticeTable > tbody > tr.comment > td{
+    padding: 30px 0px 30px 0px;
+}
+.noticeContents > .cdcNoticeTable > tbody > tr > .tb_number{
+  width:10%;
+}
+.noticeContents > .cdcNoticeTable > tbody > tr > .tb_title{
+  width:50%;
+}
+.noticeContents > .cdcNoticeTable > tbody > tr > td.tb_title{
+  text-align: left;
+}
+.noticeContents > .cdcNoticeTable > tbody > tr > .tb_writer{
+  width:20%;
+}
+.noticeContents > .cdcNoticeTable > tbody > tr > .tb_date{
+  width:20%;
+}
+.noticeContents > .cdcNoticeTable > tbody > tr > td > a{
+    font-family: 'ON-IGothic';
+}
+
+
+
+/* MOHW 디자인*/
+.noticeContents > .header > p{
+  position: absolute;
+  float:left;
+  height:70px;
+  line-height: 70px;
+  font-size: 25px;
+  font-family: 'ON-IGothic',AppleGothic,sans-serif;
+}
+
+.noticeContents > .mohwNoticeTable {
+    font-family: 'ON-IGothic',AppleGothic,sans-serif;
+    position: absolute;
+    top:160px;
+    width:80%;
+    left:10%;
+    text-align: center;
+    border-top: #000000 solid 2px;
+}
+.noticeContents > .mohwNoticeTable > tbody > tr{
+}
+.noticeContents > .mohwNoticeTable > tbody > tr:first-child{
+  height:53px;
+  border-bottom: #a0a0a0 solid 1.5px;
+    cursor: default;
+}
+
+.noticeContents > .mohwNoticeTable > tbody > tr{
+  height:50px;
+  border-bottom: #c3c3c3 solid 1.5px;
+    cursor: pointer;
+}
+
+.noticeContents > .mohwNoticeTable > tbody > tr > .tb_number{
+  width:10%;
+}
+
+.noticeContents > .mohwNoticeTable > tbody > tr > .tb_title{
+  width:70%;
+}
+.noticeContents > .mohwNoticeTable > tbody > tr > td.tb_title{
+  text-align: left;
+}
+
+.noticeContents > .mohwNoticeTable > tbody > tr > .tb_date{
+  width:20%;
+}
+
+.noticeContents > .mohwNoticeTable > tbody > tr > td > a{
+    font-family: 'ON-IGothic';
+}
+
+.noticeContents > .pageIndex{
+  position: absolute;
+  top:750px;
+  width:auto;
+  left:50%;
+  text-align: center;
+}
+
+.noticeContents > .pageIndex > a:hover{
+    font-family: 'ON-IGothic';
+  background: #f3f3f3;
+  cursor: pointer;
+}
+.noticeContents > .pageIndex > a{
+  text-align: center;
+  width:30px;
+  height:100%;
+  float:left;
+  background: #ffffff;
+}

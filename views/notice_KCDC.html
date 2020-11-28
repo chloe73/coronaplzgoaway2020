@@ -1,0 +1,81 @@
+<head>
+  <script>
+    getRequest(1);
+
+    function loadComment(id){
+        sessionStorage.setItem("noticeID",id);              // 사이트 세션에 클릭한 제목의 ID를 저장한다
+        sessionStorage.setItem("sideMenu","KCDC");       // 사이트 세션에 클릭한 공지사항의 사이드메뉴 (KCDC or MOHW)를 저장한다
+        $(".wrap").load('/page/notice_comment');             // notice_comment를 그린다.
+    }
+
+
+    // 서버로 질병관리본부 데이터 요청
+    function getRequest(page){
+      $(".mohwNoticeTable").empty();
+      $(".pageIndex").empty();
+      jQuery.ajax({
+         type: "GET",
+         url: "/getTitle",
+         data: {
+           table : "notice_kcdc_table",
+           page : page
+         },
+         success: function(result){
+           if(!$("tbody").length){
+             $(".cdcNoticeTable").append("<tbody></tbody>");
+             $(".cdcNoticeTable").append("<tr class='title'></tr>");
+             $(".title").append("<th class='tb_number'>번호</th>");
+             $(".title").append("<th class='tb_title'>제목</th>");
+             $(".title").append("<th class='tb_date'>작성일자</th>");
+           }
+
+           // statement DB에 등록된 제목 개수만큼 반복해서 html Table을 그린다.
+           (result.rows).forEach((item, i) => {
+             $(".cdcNoticeTable").append("<tr class='list_"+ i + "' onclick='loadComment(" + item.id + ")'></tr>");    // 한줄 생성
+             $(".list_"+i).append("<td class='tb_number'>" + item.id + "</td>");                              // 번호
+             $(".list_"+i).append("<td class='tb_title'>" + item.title + "</td>");                            // 제목
+             $(".list_"+i).append("<td class='tb_writer'>" + item.writer + "</td>");                            // 제목
+             $(".list_"+i).append("<td class='tb_date'>" + getFormatDate(new Date(item.date)) + "</td>");     // 작성일자
+           });
+
+         },
+         error: function(error){console.log("error : " , error);}
+      }).done(function(result){
+          var length = result.count;
+          $(".noticeContents").append("<div class='pageIndex'></div>");
+          for(var index = 1; index <= (length/10)+1; index++){
+            $(".pageIndex").append("<a id='pageIndex_" + index +"' onclick='getRequest(" + index + ")'>" + index + "</a>");
+          }
+          $(".pageIndex").css("margin-left","-" + (length/10)*20 + "px");
+          $("#pageIndex_"+page).css("font-family",'ON-IGothic');
+          $("#pageIndex_"+page).css("background","#f3f3f3");
+      });
+  }
+
+
+
+
+    // DB의 날짜를 한국형식(YYYY-MM-HH)로 리턴해주는 함수.
+    function getFormatDate(date){
+      var year = date.getFullYear();
+      var month = (1 + date.getMonth());
+      var day = date.getDate();
+      month = month >= 10 ? month : '0' + month;
+      day = day >= 10 ? day : '0' + day;
+      return  year + '-' + month + '-' + day;
+    }
+  </script>
+</head>
+
+<div class="header">
+  <img class="cdc_logo" src="/images/cdc_logo.png"/>
+</div>
+
+<table class="cdcNoticeTable">
+  <tr class="title">
+    <th class="tb_number">번호</th>
+    <th class="tb_title">제목</th>
+    <th class="tb_writer">작성자</th>
+    <th class="tb_date">작성일자</th>
+  </tr>
+</table>

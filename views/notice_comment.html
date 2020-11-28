@@ -1,0 +1,84 @@
+<head>
+  <script>
+    // 뒤로가기 이벤트가 생겼을때, 페이지 이동이 화면을 바꾼다.
+    // KCDC comment 화면에서 뒤로가기 -> KCDC 제목목록(notice_KCDC.html) 화면으로 이동
+    // MOHW comment 화면에서 뒤로가기 -> KCDC 제목목록(notice_KCDC.html) 화면으로 이동
+    history.pushState(null, null, location.href);
+    window.onpopstate = function(event) {
+      var menu = sessionStorage.getItem("sideMenu");
+        $(".wrap").load('/page/notice');
+    };
+
+    // 세션에 저장되어 있는 제목의 ID값을 가져온다.
+    var noticeID = sessionStorage.getItem("noticeID");
+    var sideMenu ;
+
+      $(".header").empty(); // header ID 안에 요소를 비운다. (로고쪽 위치)
+
+    // sideMenu에서 KCDC(질병관리본부)를 눌렀으면 sideMenu 변수에 "KCDC" 테이블 이름을 저장한다. => 그대로 서버에 보낼예정
+    // sideMenu에서 MOHW(코로나감염증-19)를 눌렀으면 sideMenu 변수에 "MOHW" 테이블 이름을 저장한다. => 그대로 서버에 보낼예정
+    switch(sessionStorage.getItem("sideMenu")){
+      case "KCDC":
+        sideMenu = "notice_kcdc_table";
+        $(".header").append("<img class='cdc_logo' src='/images/cdc_logo.png'/>");
+        break;
+      case "MOHW":
+        sideMenu = "notice_mohw_table";
+        $(".header").append("<p> 코로나 감염증-19 공지사항</p>");
+        break;
+    }
+
+    // Notice에서 선택한 제목 ID와, 선택한 SideMenu를 가지고, 서버에 제목 ID와 SideMenu에 맞는 내용을 요청한다.
+    // ex KCDC의 ID 1번을 가져와줘.
+    //   => id : 1, sideMenu : "notice_kcdc_table"
+    // ex MOHW(코로나감염즘-19)의 ID 3번을 가져와줘.
+    //   => id : 3, sideMenu : "notice_mohw_table"
+
+    jQuery.ajax({
+       type: "GET",
+       url: "/getComment",
+       data: {
+         id : noticeID,
+         table : sideMenu
+       },
+       success: function(result){},
+       error: function(error){console.log("error : " , error);}
+    }).done(function(result){
+      // DB에 등록된 제목 개수만큼 반복해서 html Table을 그린다.
+      result.forEach((item, i) => {
+        $(".cdcNoticeTable").append("<tr class='title'></tr>");
+        $(".title").append("<td class='tb_title' style='text-align:left;'>" + item.title +"</td>");
+        if(item.writer)
+          $(".title").append("<td class='tb_writer'>" + item.writer +"</td>");
+        $(".title").append("<td class='tb_date'>" + getFormatDate(new Date(item.date)) +"</td>");
+        $(".cdcNoticeTable").append("<tr class='comment'></tr>");
+        $(".comment").append("<td colspan='5' class='comment_tr' style='text-align:left;'></td>");
+        $(".comment_tr").append(item.comment);
+      });
+    });
+
+    // DB의 날짜를 한국형식(YYYY-MM-HH)로 리턴해주는 함수.
+    function getFormatDate(date){
+      var year = date.getFullYear();
+      var month = (1 + date.getMonth());
+      var day = date.getDate();
+      month = month >= 10 ? month : '0' + month;
+      day = day >= 10 ? day : '0' + day;
+      return  year + '-' + month + '-' + day;
+    }
+
+  </script>
+</head>
+<div class="noticeWrap">
+  <div class="noticeContents">
+    <div class="header">
+      <img class="cdc_logo" src="/images/cdc_logo.png"/>
+    </div>
+
+    <table class="cdcNoticeTable">
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+</div>

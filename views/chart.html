@@ -1,99 +1,162 @@
-<html lang="en">
+<html>
 <head>
-    <script>
+  <script>
+    /**
+      * jQuery: 클라이언트용 라이브러리(버튼,텍스트, 리스트 등의 처리 & 서버로 요청하는 기능)
+      * jQuery.ajax : 서버로 요청하는 기능
+      *   type : 서버로 요청하는 종류(get, post, put, delete)
+      *   url : 서버로 요청할때의 메소드 (main.js 코드에 똑같은 경로가 있다.)
+      *   data : 서버에 요청함과 동시에 전달한 데이터
+      *   success() : 서버에게 정상적으로 요청하고, 결과값을 응답받았을때 호출되는곳
+      *   done() : 서버에게 정상적으로 요청하고, 결과값을 응답받고, 뒷처리를 다했을때 호출되는곳. (success 다음에 호출됨)
+      */
+
+      var weekAgo = new Date();
+      var dataObject = {
+        date : [],
+        count : []
+      };
+
+      weekAgo.setTime(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+
+      decideIncData();
+
+      function decideTotalData(){
+        dataObject = {
+          date : [],
+          count : []
+        };
         jQuery.ajax({
-            type:"GET",
-            url:"/getAccmulate",
-             data: {'date':'2020-06-02', 'mode':'weeks'},
-             success: function(result){
-
-             },
-             error: function(error) {
-                console.log("error", error);
-             }
-        }).done(function(result){
-            console.log(result);
-            renderGraph("누적확진자 그래프", result)
+           type: "GET",
+           url: "/getLatestInfoData",
+           data: {
+             start : getFormatDate(weekAgo),
+             end : getFormatDate(new Date())
+           },
+           success: function(result){
+               result =  JSON.parse(result).response.body.items.item;
+               result.forEach((item, i) => {
+                 (dataObject.date).push(getFormatDate(new Date(item.createDt)));
+                 (dataObject.count).push(item.decideCnt);
+               });
+           },
+           error: function(error){console.log("error : " , error);}
+        }).done(function(result){               // 선택날짜의 전날과, 지금의 사망자수의 차이를 구한다
+             renderGraph("누적 확진자 그래프", dataObject);
         });
+      }
 
-        function renderGraph(mode, data){
-            var date = new Array();
-            var count = new Array();
-            var ctx = document.getElementById('myChart').getContext('2d');
-
-            // 서버로 부터 받은 데이터의 객체형 배열을 반복문으로 떼내서, 배열에 저장.
-            data.forEach((item, i) => {
-                date.push("" + (new Date(item.date).getMonth()+1) + " / " + (new Date(item.date).getDate()));
-                count.push(item.confirm);
-            });
-
-            console.log("count : " , count);
-            console.log("data : " , data)
-
-            // 위에서 처리한 데이터를 기준으로 그래프 그리기
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                labels: [
-                    date[6],date[5],date[4],date[3],date[2],date[1],date[0]
-                ],
-                datasets: [{
-                    label: mode,
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [count[6],count[5],count[4],count[3],count[2],count[1],count[0]]
-                }]
-                },
-                // Configuration options go here
-                options: {
-                    legend: {
-                    display: true
-                },
-                scales: {
-                    xAxes: [{
-                        barPercentage: 0.4
-                    }
-                    ]
-                }
-                }
-            });
-        }
-
-        function search(mode){
-            if(mode == "days"){
-                mode = "일일 확진자 그래프";
-                url = "/getDays";
+      function decideIncData(){
+        dataObject = {
+          date : [],
+          count : []
+        };
+        jQuery.ajax({
+           type: "GET",
+           url: "/getWeeksDosiData",
+           data: {
+             start : getFormatDate(weekAgo),
+             end : getFormatDate(new Date())
+           },
+           success: function(result){},
+           error: function(error){console.log("error : " , error);}
+        }).done(function(result){
+          var data =  JSON.parse(result).response.body.items.item;
+          data.forEach((item, i) => {
+            if(item.gubun === "합계"){
+              (dataObject.date).push(getFormatDate(new Date(item.createDt)));
+              (dataObject.count).push(item.incDec);
             }
-            else if(mode == "accumulate") {
-                mode = "누적 확진자 그래프";
-                url = "/getAccmulate";
-            }
-            jQuery.ajax({
-                type: "GET",
-                dataType: "json",
-                url: url,
-                data: {'date':'2020-06-02', 'mode':'weeks'},
-                success: function(result){
-                },
-                error: function(error){
-                console.log("error : " , error);
-                }
-            }).done(function(result){
-                console.log("result : " ,result);
-                renderGraph(mode, result);
-            });
+          });
+          renderGraph("일일 확진자 그래프",dataObject)
+        });
+      }
+
+
+    // DB의 날짜를 한국형식(YYYY-MM-HH)로 리턴해주는 함수.
+    function getFormatDate(date){
+      var year = date.getFullYear();
+      var month = (1 + date.getMonth());
+      var day = date.getDate();
+      var hours = date.getHours();
+      var min = date.getMinutes();
+      var second = date.getSeconds();
+      month = month >= 10 ? month : '0' + month;
+      day = day >= 10 ? day : '0' + day;
+      return  year + month + day;
+    }
+
+    /**
+      * renderGraph : 그래프를 그리는 함수
+      *   @param mode : 데이터 모드(일일확진자 or 누적 확진자)
+      *   @param data :  서버로부터 받은 데이터
+      *   date : 서버로부터 받은 최근 1주일의 날짜를 배열로 저장 {7일전, 6일전, 5일전, 4일전,3일전, 2일전, 1일전}
+      *   count : 서버로부터 받은 최근 1주일의 확진자수를 배열로 저장 {7일전 확진자, 6일전확진자, 5일전확진자, 4일전확진자,3일전확진자, 2일전확진자, 1일전확진자}
+      */
+    function renderGraph(mode, data){
+      var date = data.date;
+      var count = data.count;
+      var ctx = document.getElementById('myChart').getContext('2d');
+      // 위에서 처리한 데이터를 기준으로 그래프 그리기
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: [
+            date[6],date[5],date[4],date[3],date[2],date[1],date[0]
+          ],
+          datasets: [{
+            label: mode,
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [count[6],count[5],count[4],count[3],count[2],count[1],count[0]]
+          }]
+        },
+        // Configuration options go here
+        options: {
+              legend: {
+              display: true
+          },
+          scales: {
+            xAxes: [{  barPercentage: 0.4  }]
+          }
         }
-    </script>
+      });
+
+    }
+
+    function search(mode){
+      if(mode === "days") decideIncData();
+      else decideTotalData();
+
+    }
+
+    // 달력 이미지의 기본세팅하는곳
+    $(".datepicker-here").datepicker({
+      language: 'en',
+      onSelect: function onSelect(fd, date) {
+        var date = getFormatDate("YY-MM-HH hh:mm:ss", date);
+        console.log("date : " ,date);
+        getTotalData(date);
+        getDaysData(date);
+        // getLatestDaysQuery(date);         // 선택된 날짜의 최근 2일간의 일일 데이터를 다시 가져옴
+        // getLatestAccmulateQuery(date);    // 선택된 날짜의 최근 2일간의 누적 데이터를 다시 가져옴
+        $(".datepicker-here").hide();     // 선택하고 숨김
+      }
+    })
+
+
+  </script>
 </head>
 <body>
-    <div class ="chartWrap">
-        <div class="btn-group" id="selectWrap" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-success" onclick="search('days')">일일 확진자 수</button>
-            <button type="button" class="btn btn-info" onclick="search('accumulate')">누적 확진자 수</button>
-        </div>
-        <div id="chartWrap">
-            <canvas id="myChart"></canvas>
-        </div>
-    </div>
+
 </body>
+<div class="chatWrap">
+  <div class="btn-group" id="selectWrap" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-success" onclick="search('days')">일일 확진자 수</button>
+    <button type="button" class="btn btn-info" onclick="search('accumulate')">누적 확진자 수</button>
+  </div>
+  <div id="chartWrap">
+    <canvas id="myChart"></canvas>
+  </div>
+</div>
 </html>

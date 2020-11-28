@@ -1,6 +1,100 @@
-.dataWrap {
-    height:100%;
-    width:100%;
-    background:#c2c2c2;
-  }
-  
+.statementWrap {
+  position: relative;
+  width:80%;
+  height: 100%;
+}
+
+.statementWrap > .header{
+  position: absolute;
+  top:30px;
+  left:5%;
+  width:90%;
+  height:70px;
+  border-bottom: #c2c2c2 solid 1px;
+}
+.statementWrap > .header > p{
+  position: absolute;
+  float:left;
+  height:70px;
+  line-height: 70px;
+  font-size: 25px;
+  font-family: 'ON-IGothic',AppleGothic,sans-serif;
+}
+
+.statementWrap > .stateTable {
+    font-family: 'ON-IGothic',AppleGothic,sans-serif;
+    position: absolute;
+    top:160px;
+    width:80%;
+    left:10%;
+    text-align: center;
+    border-top: #000000 solid 2px;
+    margin-bottom: 50px;
+}
+.statementWrap > .stateTable > tbody > tr:first-child{
+  height:53px;
+  border-bottom: #a0a0a0 solid 1.5px;
+  cursor:default;
+}
+
+.statementWrap > .stateTable > tbody > tr{
+  height:50px;
+  border-bottom: #c3c3c3 solid 1.5px;
+  cursor: pointer;
+}
+
+.statementWrap > .stateTable > tr:first-child{
+  height:53px;
+  border-bottom: #a0a0a0 solid 1.5px;
+  cursor:default;
+}
+
+.statementWrap > .stateTable > tr{
+  height:50px;
+  border-bottom: #c3c3c3 solid 1.5px;
+  cursor: pointer;
+}
+
+.statementWrap > .stateTable > tr > td{
+  padding : 30px 0px 30px 0px;
+}
+
+.statementWrap > .stateTable > tbody > tr > .tb_number{
+  width:10%;
+}
+.statementWrap > .stateTable > tbody > tr > .tb_title{
+  width:70%;
+}
+.statementWrap > .stateTable > tbody > tr > td.tb_title{
+text-align: left;
+}
+.statementWrap > .stateTable > tbody > tr > .tb_date{
+  width:20%;
+}
+
+.statementWrap > .stateTable > tbody > tr > td > a{
+    font-family: 'ON-IGothic';
+    text-align: left;
+}
+
+
+.statementWrap > .pageIndex{
+  position: absolute;
+  top:750px;
+  width:auto;
+  left:50%;
+  text-align: center;
+}
+
+.statementWrap > .pageIndex > a:hover{
+    font-family: 'ON-IGothic';
+  background: #f3f3f3;
+  cursor: pointer;
+}
+.statementWrap > .pageIndex > a{
+  text-align: center;
+  width:30px;
+  height:100%;
+  float:left;
+  background: #ffffff;
+}

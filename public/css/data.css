@@ -1,17 +1,38 @@
 #dataWrap {
   font-family: 'ON-IGothic',AppleGothic,sans-serif;
   position: absolute;
-  left:20%;
+  left:15%;
   height:100%;
-  width:60%;
+  width:70%;
   margin-top: 50px;
 }
-#dataWrap > #header > h5{
+#dataWrap > #header > .header_title{
+  top:30px;
+  position:relative;
+}
+#dataWrap > #header > .header_title > img{
+  position:absolute;
+  right:0px;
+  top:0px;
+  height:50px;
+  cursor: pointer;
+}
+
+#dataWrap > #header > .header_title > input{
+  position:absolute;
+  height:2px;
+  width:2px;
+  top:10px;
+  right:30px;
+  /* display: none; */
+}
+
+#dataWrap > #header > .header_title > h2{
   font-size: 20px;
   font-weight: bold;
 
 }
-#dataWrap > #header > h2{
+#dataWrap > #header > .header_title > h5{
   font-size: 10px;
 }
 #dataWrap > #header > .headerTitleWrap{
@@ -19,6 +40,7 @@
   height: 40px;
   position: absolute;
   left: 0;
+  top:100px;
 }
 
 #dataWrap > #header > .headerTitleWrap > .confirmCountWrap{
@@ -46,15 +68,41 @@
     height: 180px;
     position: absolute;
     left: 1.5%;
-    top:97px;
+    top:147px;
     background: #f2f2f2;
+}
+
+#dataWrap > #header > .headerContentsWrap > div > .contentWrap{
+  width:25%;
+  height:100%;
+  float:left;
+
+}
+
+#dataWrap > #header > .headerContentsWrap > div > .contentWrap > a{
+  text-align: center;
+  width: 100%;
+  height:30px;
+  float: left;
+  font-weight: bold;
+}
+
+#dataWrap > #header > .headerContentsWrap > div > .contentWrap > a.contentTitle{
+  height:70px;
+  line-height: 70px;
+  font-size: 22px;
+  color: #0b2284;
+}
+
+
+#dataWrap > #header > .headerContentsWrap > div > .contentWrap > a.contentConfirm{
 }
 
 #data{
   width:100%;
   height:200px;
   position: absolute;
-  top:330px;
+  top:340px;
 }
 
 #data > .dataContentWrap{
@@ -87,6 +135,23 @@
     text-align: center;
     line-height: 40px;
     border-radius: 5px;
+}
+
+#data > .dataContentWrap > .dataContentSubWrap > .dataContentTable{
+  width:100%;
+  height:100%;
+}
+#data > .dataContentWrap > .dataContentSubWrap > .dataContentTable > tbody > tr > td{
+  width:50%;
+  float:left;
+}
+#data > .dataContentWrap > .dataContentSubWrap > .dataContentTable > tbody > tr > td:first{
+  width:50%;
+  float:right;
+}
+
+#data > .dataContentWrap > .dataContentSubWrap > .dataContentTable > tbody > tr > td > a{
+  color:#0b2284;
 }
 
 #data > .dataContentWrap > #chartWrap{
@@ -165,7 +230,7 @@
     width:65%;
     height:600px;
     float: left;
-    left:1.5%;
+    left:10%;
     position: absolute;
     top:50px;
 }
@@ -174,7 +239,7 @@
     height:1107px;
     background: #f2f2f2;
     float: left;
-    left:85%;
+    left:64%;
     position: absolute;
     top:50px;
     border-radius: 5px;
