@@ -62,13 +62,24 @@ module.exports = function(app,connection)
         res.render(category +'.html');
     });
 
-    app.get('/getRecent', function(req, res) {
-        mySql_Query = "SELECT date, checkup, confirm, death from days_logtable ORDER BY date DESC limit 1;"
+    app.get('/getLatestDay', function(req, res) {
+        //mySql_Query = "SELECT date, checkup, confirm, death from days_logtable ORDER BY date DESC limit 1;"
+        mySql_Query = "SELECT * from days_logtable ORDER BY date DESC limit 2;"
         connection.query(mySql_Query, function(err, rows) {
             if(err) throw err;
             res.send(rows);
         });
     });
+
+    app.get('/getLatestAccmulate' , function(req, res){
+        mySql_Query = "SELECT * from accumulate_logtable ORDER BY date DESC limit 1;"
+        connection.query(mySql_Query, function(err, rows) {
+            if(err) throw err;
+            res.send(rows);
+        });
+    })
+
+
 
     
 }

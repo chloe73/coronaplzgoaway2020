@@ -9,9 +9,11 @@
       day = day >=10 ? day : '0' + day;
       return year + '년' + month + '월' + day + '일';
     }
+
+    //최근 데이터 요청
     jQuery.ajax({
       type: "GET",
-      url: "/getRecent",
+      url: "/getLatestDay",
       data: {},
       success: function(result){
 
@@ -22,48 +24,81 @@
     }).done(function(result){
       console.log("result:" , result);
 
-      $("#txt_titleDate").html("&nbsp&nbsp(" + getFormatDate(new Date(result[0].date))+"기준)");
+      // DB 기준 맨 마지막날짜와 그전날을 가져와, 차이를 구하고, 문자열을 만든다.
+      var gap_confirm = (result[0].confirm - result[1].confirm);
+      var gap_checkup = (result[0].checkup - result[1].checkup);
+      var gap_death = (result[0].death - result[1].death);
+      gap_confirm = gap_confirm > 0 ? "(+" + gap_confirm +")" : "("+gap_confirm+")";
+      gap_checkup = gap_checkup > 0 ? "(+" + gap_checkup +")" : "("+gap_checkup+")";
+      gap_death = gap_death >= 0 ? "(+" + gap_death +")" : "("+gap_death+")";
 
-    });
 
-      var ctx = document.getElementById('checkChart').getContext('2d');
-      var ctx3 = document.getElementById('confirmChart').getContext('2d');
-      new Chart(ctx, {
+      // 받은 서버데이터를 해당 id에 입력한다.
+      $("#txt_titleDate").html("&nbsp&nbsp(" + getFormatDate(new Date(result[0].date)) + " 기준)");
+      $("#txt_daysConfirm").html(result[0].confirm + "명");
+      $("#txt_daysConfirmGap").html(gap_confirm);
+
+      $("#txt_daysCheckup").html(result[0].checkup + "명");
+      $("#txt_daysCheckupGap").html(gap_checkup);
+
+      $("#txt_daysDeath").html(result[0].death + "명");
+      $("#txt_daysDeathGap").html(gap_death);
+
+      $("#txt_map_accumulate").html(result[0].confirm + "명");
+      $("#txt_map_daysGap").html(gap_confirm);
+      $("#txt_map_accumulateDeath").html(result[0].death + "명");
+
+      var daysChart = document.getElementById('daysChart').getContext('2d');
+      new Chart(daysChart, {
         type: 'pie',
         data: {
           labels: ['확진','검사중'],
           datasets: [{
             backgroundColor: ['#0b2284','#d3d3d3'],
-            data: [10, 20],
+            data: [result[0].confirm, result[0].checkup],
             borderColor:"#f2f2f2"
           }]
         },
-        // Configuration options go here
         options: {
-          legend: {
-            display: true,
-          }
+          legend: {display: true}
         }
       });
 
-      new Chart(ctx3, {
-        type: 'pie',
-        data: {
-          labels: ['확진', '검사중'],
-          datasets: [{
-            backgroundColor:['#0b2284', '#d3d3d3'],
-            data:[10,20],
-            borderColor:'#f2f2f2'
-          }]
-        },
-        options: {
-          legend:{
-            display: false,
-          }
-        }
-      });
+    });
 
-      $(".mapWrap").load("/page/Republic_korea_2020")
+    jQuery.ajax({
+        type: "GET",
+        url: "/getLatestAccmulate",
+        data: {},
+        success: function(result){},
+        error: function(error){console.log("error : " , error);}
+    }).done(function(result){
+        // 받은 서버데이터를 해당 id에 입력한다.
+        $("#txt_accumulate_checkup").html(result[0].checkup + "명");
+        $("#txt_accumulate_confirm").html(result[0].confirm+ "명");
+        $("#txt_accumulate_death").html(result[0].death+ "명");
+        $("#chart_accmulate_checkup").html("(" + result[0].checkup+ "명)");
+        $("#chart_accmulate_confirm").html("(" + result[0].confirm+ "명)");
+
+        // 누적 검사현황의 원 그래프를 그린다.
+        var chartData = document.getElementById('checkChart').getContext('2d');
+        new Chart(chartData, {
+          type: 'pie',
+          data: {
+            labels: ['확진','검사중'],
+            datasets: [{
+              backgroundColor: ['#0b2284','#d3d3d3'],
+              data: [result[0].confirm, result[0].checkup],
+              borderColor:"#f2f2f2"
+            }]
+          },
+          options: {
+            legend: {display: false}
+          }
+        });
+    });
+
+    $(".mapWrap").load("/page/Republic_Korea_2020")
 
   </script>
 </head>
@@ -89,21 +124,21 @@
         <div style="width:90%; height:100%; position:absolute; left:5%;">
           <div class="contentWrap">
             <a class="contentTitle">확진환자</a>
-            <a class="contentConfirm">0명</a>
-            <a class="contentCompare">(+25)</a>
+            <a class="contentConfirm" id= "txt_daysConfirm">0명</a>
+            <a class="contentCompare" id="txt_daysConfirmGap">(0)</a>
           </div>
 
           <div class="contentWrap">
             <a class="contentTitle">검사중</a>
-            <a class="contentConfirm">0명</a>
-            <a class="contentCompare">(+25)</a>
+            <a class="contentConfirm" id= "txt_daysConfirm">0명</a>
+            <a class="contentCompare" id="txt_daysConfirmGap">(0)</a>
           </div>
 
 
           <div class="contentWrap">
             <a class="contentTitle">사망자</a>
-            <a class="contentConfirm">0명</a>
-            <a class="contentCompare">(+25)</a>
+            <a class="contentConfirm" id="txt_daysDeath">0명</a>
+            <a class="contentCompare" id="txt_daysDeathGap">(0)</a>
           </div>
         </div>
       </div>
@@ -117,15 +152,15 @@
         <table class="dataContentTable">
           <tr>
             <td style="color:#0b2284; font-weight:bold;">누적 검사수</td>
-            <td style="color:#000000;">0명</td>
+            <td style="color:#000000;" id="txt_accumulate_checkup">0명</td>
           </tr>
           <tr>
             <td style="color:#0b2284; font-weight:bold;">누적 확진자</td>
-            <td style="color:#000000;">0명</td>
+            <td style="color:#000000;" id="txt_accumulate_confirm">0명</td>
           </tr>
           <tr>
             <td style="color:#0b2284; font-weight:bold;">누적 사망자</td>
-            <td style="color:#000000;">0명</td>
+            <td style="color:#000000;" id="txt_accumulate_death">0명</td>
           </tr>
         </table>
       </div>
@@ -140,14 +175,14 @@
           <div class="barData" style="background:#0b2284">
             <p style="color:#ffffff">확진</p>
           </div>
-          <a>(0000명)</a>
+          <a id="chart_accmulate_confirm">(0000명)</a>
         </div>
 
         <div class="dataWrap">
           <div class="barData" style="background:#d3d3d3">
             <p style="color:#3d3d3d">검사중</p>
           </div>
-          <a >(0000명)</a>
+          <a id="chart_accmulate_checkup">(0000명)</a>
         </div>
       </div>
     </div>
@@ -166,32 +201,22 @@
       </div>
 
       <div class="chartWrap">
-        <canvas id="confirmChart">a</canvas>
+        <canvas id="daysChart">a</canvas>
       </div>
 
       <table class="infoTable">
         <tr>
           <td class="title"><a>누적 확진환자</a></td>
-          <td class="value"><a>0명</a></td>
+          <td class="value"><a id="txt_map_accumulate">0명</a></td>
         </tr>
         <tr>
           <td class="title" style="color:#10b4e9"><a>전면대비 증감</a></td>
-          <td class="value" style="color:#10b4e9"><a>0명</a></td>
-        </tr>
-
-        <tr>
-          <td class="title"><a>격리중</a></td>
-          <td class="value"><a>0명</a></td>
-        </tr>
-
-        <tr>
-          <td class="title"><a>누적 격리해제</a></td>
-          <td class="value"><a>0명</a></td>
+          <td class="value" style="color:#10b4e9"><a id="txt_map_daysGap">0명</a></td>
         </tr>
 
         <tr>
           <td class="title"><a>누적 사망자</a></td>
-          <td class="value"><a>0명</a></td>
+          <td class="value" id="txt_map_accumulateDeath"><a>0명</a></td>
         </tr>
       </table>
 
