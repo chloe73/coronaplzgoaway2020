@@ -1,3 +1,5 @@
+<html lang="en">
+
 <head>
   <script>
 
@@ -102,135 +104,142 @@
 
   </script>
 </head>
-<div id="dataWrap">
+<body>
+  <div id="dataWrap">
 
-  <!-- 환자 현황 -->
-  <div id="header">
-      <h5 class="header_title">환자현황
-        <h2 id="txt_titleDate">
-      </h5>
-
-      <div class="headerTitleWrap">
-        <div class="confirmCountWrap">
-          <a>확진환자 (n)</a>
+    <!-- 환자 현황 -->
+    <div id="header">
+        <h5 class="header_title">환자현황
+          <h2 id="txt_titleDate">
+        </h5>
+  
+        <div class="headerTitleWrap">
+          <div class="confirmCountWrap">
+            <a>확진환자 (n)</a>
+          </div>
+  
+          <div class="confirmCountWrap">
+            <a>검사중 (n)</a>
+          </div>
         </div>
-
-        <div class="confirmCountWrap">
-          <a>검사중 (n)</a>
+  
+        <div class="headerContentsWrap">
+          <div style="width:90%; height:100%; position:absolute; left:5%;">
+            <div class="contentWrap">
+              <a class="contentTitle">확진환자</a>
+              <a class="contentConfirm" id= "txt_daysConfirm">0명</a>
+              <a class="contentCompare" id="txt_daysConfirmGap">(0)</a>
+            </div>
+  
+            <div class="contentWrap">
+              <a class="contentTitle">검사중</a>
+              <a class="contentConfirm" id= "txt_daysConfirm">0명</a>
+              <a class="contentCompare" id="txt_daysConfirmGap">(0)</a>
+            </div>
+  
+  
+            <div class="contentWrap">
+              <a class="contentTitle">사망자</a>
+              <a class="contentConfirm" id="txt_daysDeath">0명</a>
+              <a class="contentCompare" id="txt_daysDeathGap">(0)</a>
+            </div>
+          </div>
+        </div>
+    </div>
+  
+    <!-- 검사 현황 -->
+    <div id="data">
+      <div class="dataContentWrap">
+        <a>검사현황</a>
+        <div class="dataContentSubWrap">
+          <table class="dataContentTable">
+            <tr>
+              <td style="color:#0b2284; font-weight:bold;">누적 검사수</td>
+              <td style="color:#000000;" id="txt_accumulate_checkup">0명</td>
+            </tr>
+            <tr>
+              <td style="color:#0b2284; font-weight:bold;">누적 확진자</td>
+              <td style="color:#000000;" id="txt_accumulate_confirm">0명</td>
+            </tr>
+            <tr>
+              <td style="color:#0b2284; font-weight:bold;">누적 사망자</td>
+              <td style="color:#000000;" id="txt_accumulate_death">0명</td>
+            </tr>
+          </table>
         </div>
       </div>
-
-      <div class="headerContentsWrap">
-        <div style="width:90%; height:100%; position:absolute; left:5%;">
-          <div class="contentWrap">
-            <a class="contentTitle">확진환자</a>
-            <a class="contentConfirm" id= "txt_daysConfirm">0명</a>
-            <a class="contentCompare" id="txt_daysConfirmGap">(0)</a>
+      <div class="dataContentWrap">
+        <div id="chartWrap">
+          <canvas id="checkChart"></canvas>
+        </div>
+  
+        <div class="chartDataWrap">
+          <div class="dataWrap">
+            <div class="barData" style="background:#0b2284">
+              <p style="color:#ffffff">확진</p>
+            </div>
+            <a id="chart_accmulate_confirm">(0000명)</a>
           </div>
-
-          <div class="contentWrap">
-            <a class="contentTitle">검사중</a>
-            <a class="contentConfirm" id= "txt_daysConfirm">0명</a>
-            <a class="contentCompare" id="txt_daysConfirmGap">(0)</a>
-          </div>
-
-
-          <div class="contentWrap">
-            <a class="contentTitle">사망자</a>
-            <a class="contentConfirm" id="txt_daysDeath">0명</a>
-            <a class="contentCompare" id="txt_daysDeathGap">(0)</a>
+  
+          <div class="dataWrap">
+            <div class="barData" style="background:#d3d3d3">
+              <p style="color:#3d3d3d">검사중</p>
+            </div>
+            <a id="chart_accmulate_checkup">(0000명)</a>
           </div>
         </div>
       </div>
-  </div>
-
-  <!-- 검사 현황 -->
-  <div id="data">
-    <div class="dataContentWrap">
-      <a>검사현황</a>
-      <div class="dataContentSubWrap">
-        <table class="dataContentTable">
+    </div>
+  
+    <!-- 시도별 확진자 현황 -->
+    <div id="map">
+      <div class="titleWrap">
+        <p>시도별 확진자 현황</p>
+      </div>
+      <div class="mapWrap"></div>
+  
+      <div class="infoWrap">
+        <div class="titleWrap">
+          <a class="info_title01">전국</a> <a class="info_title02">지역발생비율</a>
+        </div>
+  
+        <div class="chartWrap">
+          <canvas id="daysChart">a</canvas>
+        </div>
+  
+        <table class="infoTable">
           <tr>
-            <td style="color:#0b2284; font-weight:bold;">누적 검사수</td>
-            <td style="color:#000000;" id="txt_accumulate_checkup">0명</td>
+            <td class="title"><a>누적 확진환자</a></td>
+            <td class="value"><a id="txt_map_accumulate">0명</a></td>
           </tr>
           <tr>
-            <td style="color:#0b2284; font-weight:bold;">누적 확진자</td>
-            <td style="color:#000000;" id="txt_accumulate_confirm">0명</td>
+            <td class="title" style="color:#10b4e9"><a>전면대비 증감</a></td>
+            <td class="value" style="color:#10b4e9"><a id="txt_map_daysGap">0명</a></td>
           </tr>
+  
           <tr>
-            <td style="color:#0b2284; font-weight:bold;">누적 사망자</td>
-            <td style="color:#000000;" id="txt_accumulate_death">0명</td>
+            <td class="title"><a>누적 사망자</a></td>
+            <td class="value" id="txt_map_accumulateDeath"><a>0명</a></td>
+          </tr>
+        </table>
+  
+        <table class="linkTable">
+          <tr style="background:#006666;">
+            <td><a>공적마스크 일일 공급현황</a></td>
+          </tr>
+          <tr style="background:#00689b;">
+            <td><a>선별진료소 및 국민안심병원 찾기</a></td>
+          </tr>
+          <tr style="background:#3889cb">
+            <td><a>대상별 피해자원 정책</a></td>
           </tr>
         </table>
       </div>
+      
     </div>
-    <div class="dataContentWrap">
-      <div id="chartWrap">
-        <canvas id="checkChart"></canvas>
-      </div>
-
-      <div class="chartDataWrap">
-        <div class="dataWrap">
-          <div class="barData" style="background:#0b2284">
-            <p style="color:#ffffff">확진</p>
-          </div>
-          <a id="chart_accmulate_confirm">(0000명)</a>
-        </div>
-
-        <div class="dataWrap">
-          <div class="barData" style="background:#d3d3d3">
-            <p style="color:#3d3d3d">검사중</p>
-          </div>
-          <a id="chart_accmulate_checkup">(0000명)</a>
-        </div>
-      </div>
-    </div>
+    
   </div>
+</body>
 
-  <!-- 시도별 확진자 현황 -->
-  <div id="map">
-    <div class="titleWrap">
-      <p>시도별 확진자 현황</p>
-    </div>
-    <div class="mapWrap"></div>
+</html> 
 
-    <div class="infoWrap">
-      <div class="titleWrap">
-        <a class="info_title01">전국</a> <a class="info_title02">지역발생비율</a>
-      </div>
-
-      <div class="chartWrap">
-        <canvas id="daysChart">a</canvas>
-      </div>
-
-      <table class="infoTable">
-        <tr>
-          <td class="title"><a>누적 확진환자</a></td>
-          <td class="value"><a id="txt_map_accumulate">0명</a></td>
-        </tr>
-        <tr>
-          <td class="title" style="color:#10b4e9"><a>전면대비 증감</a></td>
-          <td class="value" style="color:#10b4e9"><a id="txt_map_daysGap">0명</a></td>
-        </tr>
-
-        <tr>
-          <td class="title"><a>누적 사망자</a></td>
-          <td class="value" id="txt_map_accumulateDeath"><a>0명</a></td>
-        </tr>
-      </table>
-
-      <table class="linkTable">
-        <tr style="background:#006666;">
-          <td><a>공적마스크 일일 공급현황</a></td>
-        </tr>
-        <tr style="background:#00689b;">
-          <td><a>선별진료소 및 국민안심병원 찾기</a></td>
-        </tr>
-        <tr style="background:#3889cb">
-          <td><a>대상별 피해자원 정책</a></td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</div>
