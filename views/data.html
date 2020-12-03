@@ -1,245 +1,377 @@
-<html lang="en">
-
 <head>
+  <link href="datepicker/css/datepicker.min.css" rel="stylesheet" type="text/css">
+  <script src="datepicker/js/datepicker.min.js"></script>
+  <script src="datepicker/js/i18n/datepicker.en.js"></script>
   <script>
+    /**
+      * jQuery: 클라이언트용 라이브러리(버튼,텍스트, 리스트 등의 처리 & 서버로 요청하는 기능)
+      * jQuery.ajax : 서버로 요청하는 기능
+      *   type : 서버로 요청하는 종류(get, post, put, delete)
+      *   url : 서버로 요청할때의 메소드 (main.js 코드에 똑같은 경로가 있다.)
+      *   data : 서버에 요청함과 동시에 전달한 데이터
+      *   success() : 서버에게 정상적으로 요청하고, 결과값을 응답받았을때 호출되는곳
+      *   done() : 서버에게 정상적으로 요청하고, 결과값을 응답받고, 뒷처리를 다했을때 호출되는곳. (success 다음에 호출됨)
+      */
 
-    function getFormatDate(date){
-      var year = date.getFullYear();
-      var month = (1+ date.getFullYear());
-      month = month >=10 ? month : '0' + month;
-      var day = date.getDate();
-      day = day >=10 ? day : '0' + day;
-      return year + '년' + month + '월' + day + '일';
+
+    /**
+      * data 화면의 데이터 렌더링부분
+      **/
+    var yesterDay = new Date();                             // Date 자료형의 객체를 저장
+      yesterDay.setTime(new Date() - (1 * 24 * 60 * 60 * 1000)); // 오늘 날짜가 저장된 변수를 기준으로 어제 날짜를 구한다.
+    sessionStorage.clear();            // 세션초기화
+    getTotalData(yesterDay);           // 공공데이터 누적 API 조회 함수 호출
+    getDaysData(yesterDay);            // 공공데이터 도시별 API 조회 함수 호출
+
+    $(".datepickers-container").show(); // 달력 레이아웃을 미리 그린다.
+    $(".mapWrap").load("/page/Republic_korea_2020");  // 한반도지도를 mapWrap의 영역으로 불러온다.
+
+    // 공공데이터 누적 코로나 데이터 API 조회
+    function getTotalData(date){
+      var today = date == null ? new Date() : new Date(date); // date 파라메타가 있으면 date의 날짜 기준으로, 없으면 오늘기준으로 날짜를 저장
+      var yesterDay = new Date();                             // Date 자료형의 객체를 저장
+        yesterDay.setTime(today.getTime() - (1 * 24 * 60 * 60 * 1000)); // 오늘 날짜가 저장된 변수를 기준으로 어제 날짜를 구한다.
+
+      // jquery를 통해 서버(router.js)에 누적데이터값을 조회한다.
+      jQuery.ajax({
+         type: "GET",
+         url: "/getLatestInfoData",
+         data: {
+           start : getFormatDate(null, yesterDay),  // 검색 시작날짜 (ex 20200610)
+           end : getFormatDate(null, today)         // 검색 종료날짜 (ex 20200611)
+         },
+         success: function(result){
+           // 요청이 성공했을때, 첫번째로 순서로 컴파일러가 처리하는공간 (done에서 처리할거라서 비워둠)
+         },
+         error: function(error){console.log("error : " , error);}
+      }).done(function(result){
+        // 요청이 성공했을때, 두번째로 순서로 컴파일러가 처리하는공간
+          // item에 공공데이터에서 받은 응답값을 저장한다.
+          var item =  JSON.parse(result).response.body.items.item;
+          if(item.length < 2){   // 공공데이터에서 아직 당일 날짜의 데이터가 갱신되지않을경우 (전날 날짜의 데이터만 들어오므로 item의 배열길이가 1개임)
+            var today = date == null ? new Date() : new Date(date);
+            var yesterDay = new Date();
+              yesterDay.setTime(today.getTime() - (1 * 24 * 60 * 60 * 1000));
+            getTotalData(yesterDay)
+            getDaysData(yesterDay);
+            var selectDate = getFormatDate("YY-MM-HH hh:mm:ss", yesterDay);
+            sessionStorage.setItem("selectDate", selectDate);
+            $(".mapWrap").load("/page/Republic_Korea_2019");
+          }
+
+          else{ // 오늘과 어제날짜의 데이터가 정상적으로 있을경우(item 배열에 어제와 오늘의 데이터 2개의 데이터가 들어있음)
+            $("#txt_titleDate").html("&nbsp&nbsp(" + item[0].createDt + " 기준)");  // 최상단 좌측 날짜
+            $("#txt_Decide").html(item[0].decideCnt + "명");                        // 확진환자(n)의 '확진환자'값
+            $("#txt_accumulate_checkup").html(item[0].examCnt + "명");              // 검사현황의 누적 검사수
+            $("#txt_accumulate_confirm").html(item[0].decideCnt+ "명");             // 검사현황의 누적 확진자수
+            $("#txt_accumulate_death").html(item[0].deathCnt+ "명");                // 검사현황의 누적 사망자
+            $("#txt_map_accumulateDeath").html(item[0].deathCnt+ "명");             // 시도별 확진자현황의 누적 사망자
+            $("#chart_accmulate_checkup").html("(" + item[0].examCnt + "명)");      // 검사현황의 검사중 원그래프 Lable
+            $("#chart_accmulate_confirm").html("(" + item[0].decideCnt + "명)");    // 검사현황의 확진 원그래프 Lable
+
+            // 검사현황의 원 그래프를 그린다.
+            $("#totalChartWrap").empty(); // 기존에 그렸던걸 먼저 지움
+            $("#totalChartWrap").append("<canvas id=\"checkChart\"></canvas>"); // 다시 원그래프를 그림
+            var chartData = document.getElementById('checkChart').getContext('2d'); // 원그래프 id를 가져온다.
+            // 원그래프를 데이터 설정후 그린다.
+            new Chart(chartData, {
+              type: 'pie',
+              data: {
+                labels: ['확진','검사중'],
+                datasets: [{
+                  backgroundColor: ['#0b2284','#d3d3d3'],
+                  data: [item[0].decideCnt, item[0].examCnt],
+                  borderColor:"#f2f2f2"
+                }]
+              },
+              options: {
+                legend: {display: false}
+              }
+            });
+          }
+
+      });
     }
 
-    //최근 데이터 요청
-    jQuery.ajax({
-      type: "GET",
-      url: "/getLatestDay",
-      data: {},
-      success: function(result){
+    // 공공데이터 도시별 데이터 API 조회
+    function getDaysData(date){
+      var today = date == null ? new Date() :  new Date(date); // date 파라메타가 있으면 date의 날짜 기준으로, 없으면 오늘기준으로 날짜를 저장
+      var yesterDay = new Date();                              // Date 자료형의 객체를 저장
+        yesterDay.setTime(today.getTime() - (1 * 24 * 60 * 60 * 1000)); // 오늘 날짜가 저장된 변수를 기준으로 어제 날짜를 구한다.
 
-      },
-      error: function(error){
-        console.log("error : " , error);
-      }
-    }).done(function(result){
-      console.log("result:" , result);
+      // jquery를 통해 서버(router.js)에 누적데이터값을 조회한다.
+      jQuery.ajax({
+         type: "GET",
+         url: "/getLatestDosiData",
+         data: {
+           start : getFormatDate(null, yesterDay), // 검색 시작날짜 (ex 20200610)
+           end : getFormatDate(null, today)        // 검색 종료날짜 (ex 20200611)
+         },
+         success: function(result){},
+         error: function(error){console.log("error : " , error);}
+      }).done(function(result){
+        var today =  JSON.parse(result.today).response.body.items.item;           // 서버에서 응답한 오늘자 데이터를 저장
+        var yesterDay =  JSON.parse(result.yesterDay).response.body.items.item;   // 서버에서 응답한 어제자 데이터를 저장.
 
-      // DB 기준 맨 마지막날짜와 그전날을 가져와, 차이를 구하고, 문자열을 만든다.
-      var gap_confirm = (result[0].confirm - result[1].confirm);
-      var gap_checkup = (result[0].checkup - result[1].checkup);
-      var gap_death = (result[0].death - result[1].death);
-      gap_confirm = gap_confirm > 0 ? "(+" + gap_confirm +")" : "("+gap_confirm+")";
-      gap_checkup = gap_checkup > 0 ? "(+" + gap_checkup +")" : "("+gap_checkup+")";
-      gap_death = gap_death >= 0 ? "(+" + gap_death +")" : "("+gap_death+")";
+        // console.log("today : " , today);
+        // console.log("yesterDay : " , yesterDay);
 
+        // 같은날 3번씩 갱신된 경우가 있어서 데이터 길이가 길때는, 제일 마지막의 19개만 가져온다(검역,제주,부산.. ~ .. 합계까지 마지막 총 19개)
+        if(today.length > 19){today = today.slice( today.length-19, today.length)  }
+        if(yesterDay.length > 19){ yesterDay.slice( yesterDay.length-19, yesterDay.length) };
 
-      // 받은 서버데이터를 해당 id에 입력한다.
-      $("#txt_titleDate").html("&nbsp&nbsp(" + getFormatDate(new Date(result[0].date)) + " 기준)");
-      $("#txt_daysConfirm").html(result[0].confirm + "명");
-      $("#txt_daysConfirmGap").html(gap_confirm);
-
-      $("#txt_daysCheckup").html(result[0].checkup + "명");
-      $("#txt_daysCheckupGap").html(gap_checkup);
-
-      $("#txt_daysDeath").html(result[0].death + "명");
-      $("#txt_daysDeathGap").html(gap_death);
-
-      $("#txt_map_accumulate").html(result[0].confirm + "명");
-      $("#txt_map_daysGap").html(gap_confirm);
-      $("#txt_map_accumulateDeath").html(result[0].death + "명");
-
-      var daysChart = document.getElementById('daysChart').getContext('2d');
-      new Chart(daysChart, {
-        type: 'pie',
-        data: {
-          labels: ['확진','검사중'],
-          datasets: [{
-            backgroundColor: ['#0b2284','#d3d3d3'],
-            data: [result[0].confirm, result[0].checkup],
-            borderColor:"#f2f2f2"
-          }]
-        },
-        options: {
-          legend: {display: true}
+        // 서버에서 받은 데이터를 사용하기 편하게 미리 처리해놓는다.
+        // 처리한내용 : 데이터가 없거나 비어있으면 '-' 로 처리, 증감은 계산이 필요하므로 0으로 처리
+        var data = {
+          "today" : {
+            "incDec" : today[today.length-1].incDec == undefined ? "-" : today[today.length-1].incDec,                        // 오늘자 확진자 증감수
+            "isolClearCnt" : today[today.length-1].isolClearCnt == undefined ? "-" : today[today.length-1].isolClearCnt,      // 오늘자 치료완료 수
+            "isolIngCnt" : today[today.length-1].isolIngCnt == undefined ? "-" : today[today.length-1].isolIngCnt,            // 오늘자 치료중인 수
+            "deathCnt" : today[today.length-1].deathCnt == undefined ? "-" : today[today.length-1].deathCnt                   // 오늘자 사망자수
+          },
+          "yesterDay" : {
+            "incDec" : yesterDay[yesterDay.length-1].incDec == undefined ? "-" : yesterDay[yesterDay.length-1].incDec,                      // 어제자 확진자 수
+            "isolClearCnt" : yesterDay[yesterDay.length-1].isolClearCnt == undefined ? "-" : yesterDay[yesterDay.length-1].isolClearCnt,    // 어제자 치료완료 수
+            "isolIngCnt" : yesterDay[yesterDay.length-1].isolIngCnt == undefined ? "-" : yesterDay[yesterDay.length-1].isolIngCnt,          // 어제자 치료중인 수
+            "deathCnt" : yesterDay[yesterDay.length-1].deathCnt == undefined ? "-" : yesterDay[yesterDay.length-1].deathCnt                 // 어제자 사망자 수
+          },
+          "Gap" :{
+            "incDec" : (yesterDay[yesterDay.length-1].incDec == undefined ? 0 : yesterDay[yesterDay.length-1].incDec) - (today[today.length-1].incDec == undefined ? 0 : today[today.length-1].incDec),
+            "isolClearCnt" : (yesterDay[yesterDay.length-1].isolClearCnt == undefined ? 0 : yesterDay[yesterDay.length-1].isolClearCnt) - (today[today.length-1].isolClearCnt == undefined ? 0 : today[yesterDay.length-1].isolClearCnt),
+            "isolIngCnt" : (yesterDay[yesterDay.length-1].isolIngCnt == undefined ? 0 : yesterDay[yesterDay.length-1].isolIngCnt) - (today[today.length-1].isolIngCnt == undefined ? 0 : today[today.length-1].isolIngCnt),
+            "deathCnt" : (yesterDay[yesterDay.length-1].deathCnt == undefined ? 0 : yesterDay[yesterDay.length-1].deathCnt) - (today[today.length-1].deathCnt == undefined ? 0 : today[today.length-1].deathCnt)
+          }
         }
-      });
 
-    });
+        $("#txt_IncDec").html("(" + data.today.incDec + ")");          // 확진환자 영역의 확진환자 증가량
+        $("#txt_IsolClear").html(data.today.isolClearCnt + "명");      // 확진환자 영역의 치료완료 수
+        $("#txt_IsolingClear").html(data.today.isolIngCnt + "명");     // 확진환자 영역의 치료중 수
+        $("#txt_Death").html(data.today.deathCnt + "명");              // 확진환자 영역의 사망자수
 
-    jQuery.ajax({
-        type: "GET",
-        url: "/getLatestAccmulate",
-        data: {},
-        success: function(result){},
-        error: function(error){console.log("error : " , error);}
-    }).done(function(result){
-        // 받은 서버데이터를 해당 id에 입력한다.
-        $("#txt_accumulate_checkup").html(result[0].checkup + "명");
-        $("#txt_accumulate_confirm").html(result[0].confirm+ "명");
-        $("#txt_accumulate_death").html(result[0].death+ "명");
-        $("#chart_accmulate_checkup").html("(" + result[0].checkup+ "명)");
-        $("#chart_accmulate_confirm").html("(" + result[0].confirm+ "명)");
+        $("#txt_IsolClearCnt").html("(" + data.Gap.isolClearCnt + ")");  // 확진환자 영역의 치료완료 증감수
+        $("#txt_IsolingClearCnt").html("(" + data.Gap.isolIngCnt + ")");   // 확진환자 영역의 치료중 증감수
+        $("#txt_DeathCnt").html("(" + data.Gap.deathCnt + ")");              // 확진환자 영역의 사망자 증감수
 
-        // 누적 검사현황의 원 그래프를 그린다.
-        var chartData = document.getElementById('checkChart').getContext('2d');
-        new Chart(chartData, {
+        $("#txt_map_accumulate").html(data.today.incDec + "명");              // 시도별 확진자 현황의 확진자 수
+        $("#txt_map_daysConfirmGap").html("(" + data.Gap.incDec + ")");       // 시도별 확진자 현황의 확진 증감수
+        $("#txt_map_accumulateCheckup").html(data.today.isolIngCnt + "명");   // 시도별 확진자 현황의 현재 치료중 수
+        $("#txt_map_daysCheckupGap").html("(" + data.Gap.isolIngCnt + ")");   // 시도별 확진자 현황의 전날대비 검사증감 수
+        $("#txt_map_daysDeathGap").html("(" + data.Gap.deathCnt + ")"); // 시도별 확진자 현황의 사망 증감수
+
+        // 도시별 원 그래프를 그린다.
+        $("#mapChartWrap").empty(); // 기존에 그렸던걸 먼저 지움
+        $("#mapChartWrap").append("<canvas id=\"daysChart\"></canvas>"); // 다시 원그래프를 그림
+        var daysChart = document.getElementById('daysChart').getContext('2d'); // 원그래프 id를 가져온다.
+        // 원그래프를 데이터 설정후 그린다.
+        new Chart(daysChart, {
           type: 'pie',
           data: {
-            labels: ['확진','검사중'],
+            labels: [today[1].gubun, today[2].gubun, today[3].gubun, today[4].gubun, today[5].gubun, today[6].gubun,
+                  today[7].gubun, today[8].gubun, today[9].gubun, today[10].gubun, today[11].gubun, today[12].gubun,
+                  today[13].gubun, today[14].gubun, today[15].gubun, today[16].gubun, today[17].gubun],
             datasets: [{
-              backgroundColor: ['#0b2284','#d3d3d3'],
-              data: [result[0].confirm, result[0].checkup],
+              backgroundColor: ['#f1c40d','#1cbc9c','#2a3d4f','#35495f','#8e45ad','#9b58b6','#c0382a','#bfbfbf',
+                                  '#e74b3d','#9b58b6','#d35500','#26ae60','#e67e22','#2ecc71','#f39c0d','#169f84','#f1c40d'],
+              data: [today[1].defCnt, today[2].defCnt, today[3].defCnt, today[4].defCnt, today[5].defCnt, today[6].defCnt,
+                    today[7].defCnt, today[8].defCnt, today[9].defCnt, today[10].defCnt, today[11].defCnt, today[12].defCnt,
+                    today[13].defCnt, today[14].defCnt, today[15].defCnt, today[16].defCnt, today[17].defCnt],
               borderColor:"#f2f2f2"
             }]
           },
-          options: {
-            legend: {display: false}
-          }
+          options: {  legend: {display: false}  }
         });
+
+      });
+    }
+
+
+    // 달력 이미지의 기본세팅하는곳
+    $(".calenderClass").datepicker({
+      language: 'en',
+      onSelect: function onSelect(fd, date) {
+        var selectDate = getFormatDate("YY-MM-HH hh:mm:ss", date);
+        sessionStorage.setItem("selectDate", selectDate); // Republic_Korea_2019.html이 날짜를 알수있게 세션에 저장.
+        getTotalData(selectDate); // 선택된 날짜의 공공데이터 Api 누적 데이터를 다시 가져옴
+        getDaysData(selectDate);  // 선택된 날짜의 공공데이터 Api 도시별 데이터를 다시 가져옴
+        $(".mapWrap").load("/page/Republic_Korea_2019");  // 선택된 날짜의 맵을 다시 그린다
+        $(".calenderClass").hide();     // 선택하고 달력 숨김
+      }
+    })
+
+    // 캘린더 이미지를 클릭했을때
+    $(".calender").click(function(){
+      $(".calenderClass").show();     // 달력을 보여주고
+      $(".calenderClass").focus();    // 달력에 포커스를 주어라.(없으면안됨)
     });
 
-    $(".mapWrap").load("/page/Republic_Korea_2020")
+    // DB의 날짜를 한국형식(YYYY-MM-HH)로 리턴해주는 함수.
+    function getFormatDate(mode, date){
+      var year = date.getFullYear();
+      var month = (1 + date.getMonth());
+      var day = date.getDate();
+      var hours = date.getHours();
+      var min = date.getMinutes();
+      var second = date.getSeconds();
+      month = month >= 10 ? month : '0' + month;
+      day = day >= 10 ? day : '0' + day;
+
+      // 날짜변환이 두가지의 형태가 필요해서 mode에 따라 리턴하는 날짜포맷을 바꿔준다.
+      if(mode == "YY-MM-HH hh:mm:ss") return year + "-" + month + "-"+ day + " 00:00:00";
+      else return  year+'' + month+'' + day;
+    }
 
   </script>
 </head>
-<body>
-  <div id="dataWrap">
+<div id="dataWrap">
 
-    <!-- 환자 현황 -->
-    <div id="header">
-        <h5 class="header_title">환자현황
-          <h2 id="txt_titleDate">
-        </h5>
-  
-        <div class="headerTitleWrap">
-          <div class="confirmCountWrap">
-            <a>확진환자 (n)</a>
-          </div>
-  
-          <div class="confirmCountWrap">
-            <a>검사중 (n)</a>
-          </div>
+  <!-- 환자 현황 -->
+  <div id="header">
+      <div class="header_title">
+        <h2>환자현황</h2>
+        <h5 id="txt_titleDate"></h5>
+        <input type='text' class="calenderClass" data-position="left top"  data-language='en'/>
+        <img src="images/calendar-01.png"; alt="" class="calender">
+      </div>
+
+      <div class="headerTitleWrap">
+        <div class="confirmCountWrap">
+          <a>확진환자 (n)</a>
         </div>
-  
-        <div class="headerContentsWrap">
-          <div style="width:90%; height:100%; position:absolute; left:5%;">
-            <div class="contentWrap">
-              <a class="contentTitle">확진환자</a>
-              <a class="contentConfirm" id= "txt_daysConfirm">0명</a>
-              <a class="contentCompare" id="txt_daysConfirmGap">(0)</a>
-            </div>
-  
-            <div class="contentWrap">
-              <a class="contentTitle">검사중</a>
-              <a class="contentConfirm" id= "txt_daysConfirm">0명</a>
-              <a class="contentCompare" id="txt_daysConfirmGap">(0)</a>
-            </div>
-  
-  
-            <div class="contentWrap">
-              <a class="contentTitle">사망자</a>
-              <a class="contentConfirm" id="txt_daysDeath">0명</a>
-              <a class="contentCompare" id="txt_daysDeathGap">(0)</a>
-            </div>
-          </div>
-        </div>
-    </div>
-  
-    <!-- 검사 현황 -->
-    <div id="data">
-      <div class="dataContentWrap">
-        <a>검사현황</a>
-        <div class="dataContentSubWrap">
-          <table class="dataContentTable">
-            <tr>
-              <td style="color:#0b2284; font-weight:bold;">누적 검사수</td>
-              <td style="color:#000000;" id="txt_accumulate_checkup">0명</td>
-            </tr>
-            <tr>
-              <td style="color:#0b2284; font-weight:bold;">누적 확진자</td>
-              <td style="color:#000000;" id="txt_accumulate_confirm">0명</td>
-            </tr>
-            <tr>
-              <td style="color:#0b2284; font-weight:bold;">누적 사망자</td>
-              <td style="color:#000000;" id="txt_accumulate_death">0명</td>
-            </tr>
-          </table>
+
+        <div class="confirmCountWrap">
+          <a>치료중 (n)</a>
         </div>
       </div>
-      <div class="dataContentWrap">
-        <div id="chartWrap">
-          <canvas id="checkChart"></canvas>
-        </div>
-  
-        <div class="chartDataWrap">
-          <div class="dataWrap">
-            <div class="barData" style="background:#0b2284">
-              <p style="color:#ffffff">확진</p>
-            </div>
-            <a id="chart_accmulate_confirm">(0000명)</a>
+
+      <div class="headerContentsWrap">
+        <div style="width:90%; height:100%; position:absolute; left:5%;">
+          <div class="contentWrap">
+            <a class="contentTitle">확진환자</a>
+            <a class="contentConfirm" id="txt_Decide">0명</a>
+            <a class="contentCompare" id="txt_IncDec">(0)</a>
           </div>
-  
-          <div class="dataWrap">
-            <div class="barData" style="background:#d3d3d3">
-              <p style="color:#3d3d3d">검사중</p>
-            </div>
-            <a id="chart_accmulate_checkup">(0000명)</a>
+
+          <div class="contentWrap">
+            <a class="contentTitle">치료완료</a>
+            <a class="contentConfirm" id="txt_IsolClear">0명</a>
+            <a class="contentCompare" id="txt_IsolClearCnt">(0)</a>
+          </div>
+
+          <div class="contentWrap">
+            <a class="contentTitle">치료중</a>
+            <a class="contentConfirm" id="txt_IsolingClear">0명</a>
+            <a class="contentCompare" id="txt_IsolingClearCnt">(0)</a>
+          </div>
+
+          <div class="contentWrap">
+            <a class="contentTitle">사망자</a>
+            <a class="contentConfirm" id="txt_Death">0명</a>
+            <a class="contentCompare" id="txt_DeathCnt">(0)</a>
           </div>
         </div>
       </div>
-    </div>
-  
-    <!-- 시도별 확진자 현황 -->
-    <div id="map">
-      <div class="titleWrap">
-        <p>시도별 확진자 현황</p>
-      </div>
-      <div class="mapWrap"></div>
-  
-      <div class="infoWrap">
-        <div class="titleWrap">
-          <a class="info_title01">전국</a> <a class="info_title02">지역발생비율</a>
-        </div>
-  
-        <div class="chartWrap">
-          <canvas id="daysChart">a</canvas>
-        </div>
-  
-        <table class="infoTable">
-          <tr>
-            <td class="title"><a>누적 확진환자</a></td>
-            <td class="value"><a id="txt_map_accumulate">0명</a></td>
-          </tr>
-          <tr>
-            <td class="title" style="color:#10b4e9"><a>전면대비 증감</a></td>
-            <td class="value" style="color:#10b4e9"><a id="txt_map_daysGap">0명</a></td>
-          </tr>
-  
-          <tr>
-            <td class="title"><a>누적 사망자</a></td>
-            <td class="value" id="txt_map_accumulateDeath"><a>0명</a></td>
-          </tr>
-        </table>
-  
-        <table class="linkTable">
-          <tr style="background:#006666;">
-            <td><a>공적마스크 일일 공급현황</a></td>
-          </tr>
-          <tr style="background:#00689b;">
-            <td><a>선별진료소 및 국민안심병원 찾기</a></td>
-          </tr>
-          <tr style="background:#3889cb">
-            <td><a>대상별 피해자원 정책</a></td>
-          </tr>
-        </table>
-      </div>
-      
-    </div>
-    
   </div>
-</body>
 
-</html> 
+  <!-- 검사 현황 -->
+  <div id="data">
+    <div class="dataContentWrap">
+      <a>검사현황</a>
+      <div class="dataContentSubWrap">
+        <table class="dataContentTable">
+          <tr>
+            <td style="color:#0b2284; font-weight:bold;">누적 검사수</td>
+            <td style="color:#000000;" id="txt_accumulate_checkup">0명</td>
+          </tr>
+          <tr>
+            <td style="color:#0b2284; font-weight:bold;">누적 확진자</td>
+            <td style="color:#000000;"  id="txt_accumulate_confirm">0명</td>
+          </tr>
+          <tr>
+            <td style="color:#0b2284; font-weight:bold;">누적 사망자</td>
+            <td style="color:#000000;"  id="txt_accumulate_death">0명</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="dataContentWrap">
+      <div class="chartWrap" id="totalChartWrap">
+        <canvas id="checkChart"></canvas>
+      </div>
 
+      <div class="chartDataWrap">
+        <div class="dataWrap">
+          <div class="barData" style="background:#0b2284">
+            <p style="color:#ffffff">확진</p>
+          </div>
+          <a id="chart_accmulate_confirm">(0명)</a>
+        </div>
+
+        <div class="dataWrap">
+          <div class="barData" style="background:#d3d3d3">
+            <p style="color:#3d3d3d">검사중</p>
+          </div>
+          <a id="chart_accmulate_checkup">(0명)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 시도별 확진자 현황 -->
+  <div id="map">
+    <div class="titleWrap">
+      <p>시도별 확진자 현황</p>
+    </div>
+
+    <div class="mapWrap"></div>
+
+    <div class="infoWrap">
+      <div class="titleWrap">
+        <a class="info_title01">전국</a> <a class="info_title02">지역발생비율</a>
+      </div>
+
+      <div class="chartWrap" id="mapChartWrap">
+        <canvas id="daysChart"></canvas>
+      </div>
+
+      <table class="infoTable">
+        <tr>
+          <td class="title"><a>일일 확진환자</a></td>
+          <td class="value" ><a id="txt_map_accumulate">0명</a></td>
+        </tr>
+        <tr>
+          <td class="title" style="color:#10b4e9"><a>전날대비 확진증감</a></td>
+          <td class="value" style="color:#10b4e9"><a id="txt_map_daysConfirmGap">0명</a></td>
+        </tr>
+        <tr>
+          <td class="title"><a>현재 치료중</a></td>
+          <td class="value"><a id="txt_map_accumulateCheckup">0명</a></td>
+        </tr>
+        <tr>
+          <td class="title" style="color:#10b4e9"><a>전날대비 검사증감</a></td>
+          <td class="value" style="color:#10b4e9"><a id="txt_map_daysCheckupGap">0명</a></td>
+        </tr>
+        <tr>
+          <td class="title"><a>누적 사망자</a></td>
+          <td class="value"><a id="txt_map_accumulateDeath">0명</a></td>
+        </tr>
+        <tr>
+          <td class="title" style="color:#10b4e9"><a>전날대비 사망증감</a></td>
+          <td class="value" style="color:#10b4e9"><a id="txt_map_daysDeathGap">0명</a></td>
+        </tr>
+      </table>
+
+      <!-- <table class="linkTable">
+        <tr style="background:#006666;">
+          <td><a>공적마스크 일일 공급현황</a></td>
+        </tr>
+        <tr style="background:#00689b;">
+          <td><a>선별진료소 및 국민안심병원 찾기</a></td>
+        </tr>
+        <tr style="background:#3889cb">
+          <td><a>대상별 피해자원 정책</a></td>
+        </tr>
+      </table> -->
+    </div>
+  </div>
+
+</div>

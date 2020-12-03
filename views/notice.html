@@ -4,29 +4,43 @@
     // 만약 KCDC comment를 보고 뒤로가기를 눌러 이페이지를 왔다면, KCDC 제목 목록이 뜨는 화면으로 이동
     // 만약 MOHW comment를 보고 뒤로가기를 눌러 이페이지를 왔다면, MOHW 제목 목록이 뜨는 화면으로 이동.
     // 만약 그냥 탭을 눌러 이 페이지 왔다면, KCDC를 기본으로 그린다
-    history.pushState(null, null, location.href);
-    window.onpopstate = function(event) {
-      var menu = sessionStorage.getItem("sideMenu");
-      switch(menu){
-        case "KCDC":
-          $(".noticeContents").load('/page/notice');
-          break;
-        case "MOHW":
-          $(".noticeContents").load('/page/notice_MOHW');
-          break;
-        default :
-          $(".noticeContents").load('/page/notice');
-      }
-    };
-
-
-    $(".noticeContents").load("/page/notice_KCDC");
-
+    var menu = sessionStorage.getItem("sideMenu");
+    console.log("menu : " , menu);
+    switch(menu){
+      case "KCDC":
+      case null:
+        $(".sideMenu_KCDC").css('backgroundColor','#003964');
+        $(".sideMenu_MOHW").css('backgroundColor','#ffffff');
+        $(".sideMenu_KCDC > a").css('color','#ffffff');
+        $(".sideMenu_MOHW > a").css('color','#212529');
+        $(".noticeContents").load('/page/notice_KCDC');
+        break;
+      case "MOHW":
+        $(".sideMenu_KCDC").css('backgroundColor','#ffffff');
+        $(".sideMenu_MOHW").css('backgroundColor','#003964');
+        $(".sideMenu_KCDC > a").css('color','#212529');
+        $(".sideMenu_MOHW > a").css('color','#ffffff');
+        $(".noticeContents").load('/page/notice_MOHW');
+        break;
+    }
     // 사이드 메뉴를 눌렀을때, 페이지를 불러온다.
     // notice_KCDC : 질병관리본부 페이지를 불러온다.(view/notice_KCDC.html)
     // notice_MOHW : 코로나 감염증-19 페이지를 불러온다. (view/notice_MOHW.html)
     function onMenu(page){
       // noticeConetents 라는 클래스 공간에 page를 불러오는 코드
+      if(page == "notice_KCDC"){
+          $(".sideMenu_KCDC").css('backgroundColor','#003964');
+          $(".sideMenu_MOHW").css('backgroundColor','#ffffff');
+          $(".sideMenu_KCDC > a").css('color','#ffffff');
+          $(".sideMenu_MOHW > a").css('color','#212529');
+      }
+      else{
+          $(".sideMenu_KCDC").css('backgroundColor','#ffffff');
+          $(".sideMenu_MOHW").css('backgroundColor','#003964');
+          $(".sideMenu_KCDC > a").css('color','#212529');
+          $(".sideMenu_MOHW > a").css('color','#ffffff');
+
+      }
       $(".noticeContents").load("/page/"+page);
     }
 
@@ -47,8 +61,8 @@
   <div class="sideMenu">
     <ul>
       <li><a>공지사항</a></li>
-      <li onclick="onMenu('notice_KCDC')"><a>질병관리본부 KCDC</a></li>
-      <li onclick="onMenu('notice_MOHW')"><a>코로나 감염증-19</a></li>
+      <li class="sideMenu_KCDC" onclick="onMenu('notice_KCDC')"><a>질병관리본부 KCDC</a></li>
+      <li class="sideMenu_MOHW"onclick="onMenu('notice_MOHW')"><a>코로나 감염증-19</a></li>
     </ul>
   </div>
 

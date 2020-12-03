@@ -77,6 +77,24 @@ text-align: left;
     text-align: left;
 }
 
-.statementWrap > .stateTable > tbody > tr > div.comment> img{
 
+.statementWrap > .pageIndex{
+  position: absolute;
+  top:750px;
+  width:auto;
+  left:50%;
+  text-align: center;
+}
+
+.statementWrap > .pageIndex > a:hover{
+    font-family: 'ON-IGothic';
+  background: #f3f3f3;
+  cursor: pointer;
+}
+.statementWrap > .pageIndex > a{
+  text-align: center;
+  width:30px;
+  height:100%;
+  float:left;
+  background: #ffffff;
 }

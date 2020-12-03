@@ -1,81 +1,54 @@
-<html lang="en">
+<!-- // 웹페이지를 열면 가장 먼저 들어오는 부분. -->
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>One Click COVID-19</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" media="screen and (min-width: 769px)" href="css/chart.css" /> <!-- 데스크탑 -->
+    <link rel="stylesheet" media="screen and (max-width: 768px)" href="css/chart.mobile.css" /> <!-- Phone-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/data.css">
-    <link rel="stylesheet" href="css/chart.css">
+    <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/notice.css">
     <link rel="stylesheet" href="css/statement.css">
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
-
     <script>
-        function onPage(value){
-            console.log("!!");
-            $(".wrap").load('/page/' + value);
-        }
+
+      // 세션을 초기화한다.
+      sessionStorage.clear();
+
+      $(document).ready(function(){
+        // index 페이지가 열리면 가장먼저 data 화면을 요청해서 wrap id에 load 한다.
+        $(".wrap").load('/page/data');
+      });
+
+      // 위에 헤더메뉴를 누르면, wrap id에 요청한 화면을 load한다.
+      function onPage(value){
+        $(".wrap").load('/page/' + value);
+
+        // 페이지 이동할때 달력이 남아있어서 이동할때마다 달력을 숨김.
+        $(".datepickers-container").hide();
+      }
     </script>
-    <title>Document</title>
 </head>
 <body>
-
-    <div id="header" class="container-fluid">
-        <!-- <div class="logo" class="clearfix">
-            5조
-        </div>
-        <div class="menu" class="clearfix" >
-            <ul>
-                <li onclick="onPage('data')"><a>Data</a></li>
-                <li onclick="onPage('chart')"><a>Chart</a></li>
-                <li class="me" onclick="onPage('statement')"><a>Statement</a></li>
-                <li onclick="onPage('notice')"><a>Notice</a></li>
-            </ul>
-        </div>
-        <div class="calendar" class="clearfix">
-            <img src="images/calendar-01.png"; alt="" class="cal">
-        </div> -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="collapse" id="navbarToggleExternalContent">
-                <div class="bg-dark p-4">
-                    <h5 class="text-white h4">Collapsed Content</h5>
-                    <span class="text-muted"> sdf</span>
-                </div>
-            </div>
-            <span class="navbar-brand">5조</span>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                  <li class="nav-item"  onclick="onPage('data')">
-                    <a class="nav-link" href="#">Data <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item"  onclick="onPage('chart')">
-                    <a class="nav-link" href="#">Chart <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item"  onclick="onPage('statement')">
-                    <a class="nav-link" href="#">Statement <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item"  onclick="onPage('notice')">
-                    <a class="nav-link" href="#">Notice <span class="sr-only">(current)</span></a>
-                  </li>
-                </ul>   
-            </div>
-            <div class="calendar" class="clearfix">
-                <img src="images/calendar-01.png"; alt="" class="cal">
-            </div>  
-                     
-        </nav>
-
-    </div>
-    <div class="wrap">
-        
-    </div>
-    <footer class="text-center page-footer bg-dark fixed-bottom" >
-        <div class="container">
-            <span class="text-white">coronaplzgoaway2020 유순조</span>
-        </div>
-    </footer>
-  </body>
+  <div id="header">
+      <div class="logo">
+          <img src="images/logo-01.png" alt="#">
+      </div>
+      <div class="menu" class="clearfix">
+          <ul>
+              <li onclick="onPage('data')"><a>Data</a></li>
+              <li onclick="onPage('chart')"><a>Chart</a></li>
+              <li onclick="onPage('statement')"><a>Statement</a></li>
+              <li onclick="onPage('notice')"><a>Notice</a></li>
+          </ul>
+      </div>
+  </div>
+   <div class="wrap">
+   </div>
+</body>
 </html>

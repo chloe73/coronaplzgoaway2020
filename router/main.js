@@ -1,72 +1,45 @@
 module.exports = function(app, connection)
 {
+	const request = require('request');
+	const key = "5d3ywBHCsVdtChGV7AYGHDjuul8XnbA9FaSDxL3pOqksYUoSAK4WToVw173U3UQK1xRpdHoSlLB51nkxT6Z0Ew%3D%3D";
+
+	function requestAPI(_method, _pageNo, _numOfRow, _startCreateDt, _endCreateDt, _callback){
+
+		const pageNo = _pageNo;
+		const numOfRow = _numOfRow;
+		const startCreateDt = _startCreateDt;
+		const endCreateDt = _endCreateDt;
+
+		const url = "http://openapi.data.go.kr/openapi/service/rest/Covid19/" + _method
+		 	+ "?serviceKey=" + key
+			+ "&pageNo=" + pageNo
+			+ "&numOfRows=" + numOfRow
+			+ "&startCreateDt=" + startCreateDt
+			+ "&endCreateDt="+endCreateDt;
+			// console.log("url : " , url);
+
+			request.get({
+				url : url,
+				method : "GET",
+				headers: {
+				 'Accept': 'application/json',
+				 'Accept-Charset': 'utf-8',
+				 'User-Agent': 'my-reddit-client'
+		 		}
+				},
+				function(err, res, body){
+					// console.log("res : " , body);
+					if(err) console.log("request err : " , err);
+					else{
+						_callback(body);
+					}
+				})
+	}
 	// 127.0.0.1:3000/ 로 들어왔을때 처리하는 서버코드
 	app.get('/',function(req,res){
 			// index.html을 클라이언트에게 rendering해라.
 			res.render('index.html');
 	});
-
-	/**
-		*  127.0.0.1:3000/getAccmulate?date='날짜'로 들어왔을때 처리하는 서버코드
-		*    클라이언트(WebSite)에게 받은 날짜를 가지고, 데이터베이스에게 조회를 요청합니다.
-		*    ex : 127.0.0.1:3000/getAccmulate
-		*/
-	app.get('/getAccmulate',function(req,res){
-		var date = req.query.date + " 00:00:00"; 	// 클라이언트에게 받은 시간
-		var mode = req.query.mode;			// 클라이언트에게 받은 모드("weeks" or "days")
-		var mySql_Query;				// MySQL 언어를 저장할 변수
-
-		switch(mode){
-			case "weeks" :
-				// "최근 1주일의 누적 확진자수를 검색해줘" MySQL 명령문장을 저장.
-				// mySql_Query = "SELECT * FROM accumulate_logtable WHERE date > date_add(now(),interval -8 day);"
-				mySql_Query = "SELECT * from accumulate_logtable ORDER BY date DESC limit 7";
-				break;
-			case "days" :
-				 // "클라이언트에게 받은 날짜의 확진자수를 검색해줘" MySQL 명령문장을 저장.
-				mySql_Query = "SELECT * FROM accumulate_logtable WHERE date=\"" + date + "\";"
-				break;
-		}
-		console.log("mySql_Query : " , mySql_Query); // 서버 콘솔창에 출력. 이 문장은 위에서 담은 MySQL 변수를 출력
-
-		// 데이터베이스 정보를 담은 변수를 사용해서 MYSQL 언어를 데이터베이스에 전달한다.
-		connection.query(mySql_Query, function(err, rows) {
-			if(err) throw err; // 에러가 있을경우 에러메시지를 출력
-			res.send(rows);		 // 에러가 없을경우 클라이언트에게 결과값(rows)를 응답.
-		});
-	});
-
-
-	/**
-		*  127.0.0.1:3000/getDays?date='날짜'로 들어왔을때 처리하는 서버코드
-		*    클라이언트(WebSite)에게 받은 날짜를 가지고, 데이터베이스에게 조회를 요청합니다.
-		*    ex : 127.0.0.1:3000/getDays?date='2020-05-03' => 2020-05-03 날짜의 일일 데이터
-		*/
-	app.get('/getDays', function(req,res){
-		var date = req.query.date + " 00:00:00"; 	// 클라이언트에게 받은 시간
-		var mode = req.query.mode;			// 클라이언트에게 받은 모드("weeks" or "days")
-		var mySql_Query;				// MySQL 언어를 저장할 변수
-
-		switch(mode){
-			case "weeks" :
-				// "최근 1주일의 일일 확진자수를 검색해줘" MySQL 명령문장을 저장.
-				// mySql_Query = "SELECT * FROM days_logtable WHERE date > date_add(now(),interval -8 day);"
-				mySql_Query = "SELECT * from days_logtable ORDER BY date DESC limit 7";
-				break;
-			case "days" :
-				// "클라이언트에게 받은 날짜의 확진자수를 검색해줘" MySQL 명령문장을 저장.
-				mySql_Query = "SELECT * FROM days_logtable WHERE date=\"" + date + "\";"
-				break;
-		}
-		console.log("mySql_Query : " , mySql_Query);// 서버 콘솔창에 출력. 이 문장은 위에서 담은 MySQL 변수를 출력
-
-		// 데이터베이스 정보를 담은 변수를 사용해서 MYSQL 언어를 데이터베이스에 전달한다.
-		connection.query(mySql_Query, function(err, rows) {
-			if(err) throw err; // 에러가 있을경우 에러메시지를 출력
-			res.send(rows);		 // 에러가 없을경우 클라이언트에게 결과값(rows)를 응답.
-		});
-	});
-
 
 	/**
 		*	사용자가 요청한 화면을 응답하여 웹사이트를 그려준다.
@@ -78,43 +51,112 @@ module.exports = function(app, connection)
 			res.render(category +'.html');
 	});
 
-	app.get('/getLatestDay',function(req,res){
-		// mySql_Query = "SELECT Seoul+Busan+Daegu+Incheon+Gwangju+Daejeon+Ulsan+Sejong+Gyeonggi+Gangwon+Chungbuk+Chungnam+Jeonbuk+Jeonnam+Gyeongbuk+Gyeongnam+Jeju AS ROW_SUM FROM days_logtable ORDER BY date DESC LIMIT 1; "
-		mySql_Query = "SELECT * from days_logtable ORDER BY date DESC limit 2;"
-		connection.query(mySql_Query, function(err, rows) {
-			if(err) throw err; // 에러가 있을경우 에러메시지를 출력
-			res.send(rows);		 // 에러가 없을경우 클라이언트에게 결과값(rows)를 응답.
+
+
+	app.get('/getLatestInfoData',function(req,res){
+	 	const page = 1;
+		const numOfRow = 10;
+		var start = req.query.start;
+		var end = req.query.end;
+		console.log(start + " to " + end)
+		requestAPI("getCovid19InfStateJson", page, numOfRow, start, end,function(data){
+			if(res)
+				res.send(data);
+			else {
+				res.send(false)
+			}
 		});
 	});
 
-	app.get('/getLatestAccmulate',function(req,res){
-		// mySql_Query = "SELECT Seoul+Busan+Daegu+Incheon+Gwangju+Daejeon+Ulsan+Sejong+Gyeonggi+Gangwon+Chungbuk+Chungnam+Jeonbuk+Jeonnam+Gyeongbuk+Gyeongnam+Jeju AS ROW_SUM FROM days_logtable ORDER BY date DESC LIMIT 1; "
-		mySql_Query = "SELECT * from accumulate_logtable ORDER BY date DESC limit 1;"
-		connection.query(mySql_Query, function(err, rows) {
-			if(err) throw err; // 에러가 있을경우 에러메시지를 출력
-			res.send(rows);		 // 에러가 없을경우 클라이언트에게 결과값(rows)를 응답.
+	app.get('/getWeeksDosiData',function(req,res){
+	 	const page = 1;
+		const numOfRow = 10;
+		var start = req.query.start;
+		var end = req.query.end;
+		console.log("start : " + start + " end : " + end)
+		requestAPI("getCovid19SidoInfStateJson", page, numOfRow, start, end,function(data){
+			if(res)
+				res.send(data);
+			else {
+				res.send(false)
+			}
 		});
 	});
+
+	app.get('/getLatestDosiData',function(req,res){
+	 	const page = 1;
+		const numOfRow = 10;
+		var start = req.query.start;
+		var end = req.query.end;
+		var obj = {
+			today : null,
+			yesterDay : null
+		}
+		requestAPI("getCovid19SidoInfStateJson", page, numOfRow, start, start,function(data){
+			if(res){
+				obj.today = data;
+				requestAPI("getCovid19SidoInfStateJson", page, numOfRow, end, end,function(data){
+					if(res){
+						obj.yesterDay = data;
+						res.send(obj);
+					}
+					else {
+						res.send(false)
+					}
+				});
+			}
+			else {
+				res.send(false)
+			}
+		});
+	});
+
+
 	// 질병관리본부 테이블의 제목ID에 맞는 내용을 가져와라
 	app.get('/getComment',function(req,res){
 		var id = req.query.id;
 		var table = req.query.table;
 		mySql_Query = "SELECT * from " + table + " WHERE id="+id+"";
 		console.log("mySql_Query : " , mySql_Query);
-		connection.query(mySql_Query, function(err, rows) {
-			if(err) throw err; // 에러가 있을경우 에러메시지를 출력
-			res.send(rows);		 // 에러가 없을경우 클라이언트에게 결과값(rows)를 응답.
-		});
+		try{
+			connection.query(mySql_Query, function(err, rows) {
+				if(err) throw err; // 에러가 있을경우 에러메시지를 출력
+				res.send(rows);		 // 에러가 없을경우 클라이언트에게 결과값(rows)를 응답.
+			});
+		}
+		catch(e){
+			res.send(e);
+		}
 	});
 
-	// 질병관리본부 테이블의 제목을 날짜순으로 모두 가져와라
+	// 1. 먼저 테이블의 레코드 개수를 가져온다
+	// 2. 테이블의 제목을 날짜순으로 모두 가져온다
+	// 합쳐서 레코드개수와 제목들을 함께 응답해준다.
 	app.get('/getTitle',function(req,res){
 		var table = req.query.table;
-		mySql_Query = "SELECT * from " + table +" ORDER BY date DESC;"
-		connection.query(mySql_Query, function(err, rows) {
-			if(err) throw err; // 에러가 있을경우 에러메시지를 출력
-			res.send(rows);		 // 에러가 없을경우 클라이언트에게 결과값(rows)를 응답.
-		});
+		var page = req.query.page;
+		try{
+			mySql_Query = "SELECT COUNT(*) AS count from " + table +";"; // 레코드 개수 가져오는명령
+			connection.query(mySql_Query, function(err, rows) {
+				if(err){
+					cosnole.log("err : " ,err);
+					res.send(err);
+				}
+
+				var count = rows[0].count; // 첫번째 connection.query를 통해 가져온 레코드 개수를 저장
+				var startID = (count-1) - ((page-1) * 10) ;
+				var endID = startID - 9 ;
+
+				mySql_Query = "SELECT * from " + table +" WHERE id BETWEEN " + endID + " AND " + startID + " ORDER BY id DESC";
+				console.log("mySql_Query : " , mySql_Query)
+				connection.query(mySql_Query, function(err, rows) { // 테이블의 제목을 날짜순으로 모두 가져오는 명령
+					if(err) throw err;
+					res.send({count:count, rows:rows});	// 레코드개수와 테이블제목들을 응답.
+				});
+			});
+		}catch(e){
+			res.send(e);
+		}
 	});
 
 }

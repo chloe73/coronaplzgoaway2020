@@ -156,3 +156,24 @@
 .noticeContents > .mohwNoticeTable > tbody > tr > td > a{
     font-family: 'ON-IGothic';
 }
+
+.noticeContents > .pageIndex{
+  position: absolute;
+  top:750px;
+  width:auto;
+  left:50%;
+  text-align: center;
+}
+
+.noticeContents > .pageIndex > a:hover{
+    font-family: 'ON-IGothic';
+  background: #f3f3f3;
+  cursor: pointer;
+}
+.noticeContents > .pageIndex > a{
+  text-align: center;
+  width:30px;
+  height:100%;
+  float:left;
+  background: #ffffff;
+}
