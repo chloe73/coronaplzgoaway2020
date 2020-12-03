@@ -56,7 +56,7 @@
             getDaysData(yesterDay);
             var selectDate = getFormatDate("YY-MM-HH hh:mm:ss", yesterDay);
             sessionStorage.setItem("selectDate", selectDate);
-            $(".mapWrap").load("/page/Republic_Korea_2019");
+            $(".mapWrap").load("/page/Republic_korea_2020");
           }
 
           else{ // 오늘과 어제날짜의 데이터가 정상적으로 있을경우(item 배열에 어제와 오늘의 데이터 2개의 데이터가 들어있음)
@@ -193,7 +193,7 @@
         sessionStorage.setItem("selectDate", selectDate); // Republic_Korea_2019.html이 날짜를 알수있게 세션에 저장.
         getTotalData(selectDate); // 선택된 날짜의 공공데이터 Api 누적 데이터를 다시 가져옴
         getDaysData(selectDate);  // 선택된 날짜의 공공데이터 Api 도시별 데이터를 다시 가져옴
-        $(".mapWrap").load("/page/Republic_Korea_2019");  // 선택된 날짜의 맵을 다시 그린다
+        $(".mapWrap").load("/page/Republic_korea_2020");  // 선택된 날짜의 맵을 다시 그린다
         $(".calenderClass").hide();     // 선택하고 달력 숨김
       }
     })
