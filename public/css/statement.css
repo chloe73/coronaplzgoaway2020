@@ -21,7 +21,7 @@
   font-family: 'ON-IGothic',AppleGothic,sans-serif;
 }
 
-.statementWrap > .cdcNoticeTable {
+.statementWrap > .stateTable {
     font-family: 'ON-IGothic',AppleGothic,sans-serif;
     position: absolute;
     top:160px;
@@ -31,49 +31,52 @@
     border-top: #000000 solid 2px;
     margin-bottom: 50px;
 }
-.statementWrap > .cdcNoticeTable > tbody > tr:first-child{
+.statementWrap > .stateTable > tbody > tr:first-child{
   height:53px;
   border-bottom: #a0a0a0 solid 1.5px;
   cursor:default;
 }
 
-.statementWrap > .cdcNoticeTable > tbody > tr{
+.statementWrap > .stateTable > tbody > tr{
   height:50px;
   border-bottom: #c3c3c3 solid 1.5px;
   cursor: pointer;
 }
 
-.statementWrap > .cdcNoticeTable > tr:first-child{
+.statementWrap > .stateTable > tr:first-child{
   height:53px;
   border-bottom: #a0a0a0 solid 1.5px;
   cursor:default;
 }
 
-.statementWrap > .cdcNoticeTable > tr{
+.statementWrap > .stateTable > tr{
   height:50px;
   border-bottom: #c3c3c3 solid 1.5px;
   cursor: pointer;
 }
 
-.statementWrap > .cdcNoticeTable > tbody > tr > .tb_number{
+.statementWrap > .stateTable > tr > td{
+  padding : 30px 0px 30px 0px;
+}
+
+.statementWrap > .stateTable > tbody > tr > .tb_number{
   width:10%;
 }
-
-.statementWrap > .cdcNoticeTable > tbody > tr > .tb_title{
+.statementWrap > .stateTable > tbody > tr > .tb_title{
   width:70%;
 }
-.statementWrap > .cdcNoticeTable > tbody > tr > td.tb_title{
+.statementWrap > .stateTable > tbody > tr > td.tb_title{
 text-align: left;
 }
-.statementWrap > .cdcNoticeTable > tbody > tr > .tb_date{
+.statementWrap > .stateTable > tbody > tr > .tb_date{
   width:20%;
 }
 
-.statementWrap > .cdcNoticeTable > tbody > tr > td > a{
+.statementWrap > .stateTable > tbody > tr > td > a{
     font-family: 'ON-IGothic';
     text-align: left;
 }
 
-.statementWrap > .cdcNoticeTable > tbody > tr > div.comment> img{
+.statementWrap > .stateTable > tbody > tr > div.comment> img{
 
 }
