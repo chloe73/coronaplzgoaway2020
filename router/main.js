@@ -62,6 +62,13 @@ module.exports = function(app,connection)
         res.render(category +'.html');
     });
 
+    app.get('/state/:category',function(req,res){
+        const category = req.params.category;
+        console.log("req : " , req);
+        console.log("category : " , category);
+        res.send(true);
+    });
+
     app.get('/getLatestDay', function(req, res) {
         //mySql_Query = "SELECT date, checkup, confirm, death from days_logtable ORDER BY date DESC limit 1;"
         mySql_Query = "SELECT * from days_logtable ORDER BY date DESC limit 2;"

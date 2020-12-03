@@ -1,7 +1,7 @@
 .statementWrap {
-  height:100%;	  position: relative;
-  width:100%;	  width:80%;
-  background:#f2f2f2;	  height: 100%;
+  position: relative;
+  width:80%;
+  height: 100%;
 }
 
 .statementWrap > .header{
@@ -29,18 +29,30 @@
     left:10%;
     text-align: center;
     border-top: #000000 solid 2px;
+    margin-bottom: 50px;
 }
-.statementWrap > .cdcNoticeTable > tbody > tr{
-  cursor: pointer;
-}
-.statementWrap > .cdcNoticeTable > tbody > tr.title{
+.statementWrap > .cdcNoticeTable > tbody > tr:first-child{
   height:53px;
   border-bottom: #a0a0a0 solid 1.5px;
+  cursor:default;
 }
 
-.statementWrap > .cdcNoticeTable > tbody > tr.list{
+.statementWrap > .cdcNoticeTable > tbody > tr{
   height:50px;
   border-bottom: #c3c3c3 solid 1.5px;
+  cursor: pointer;
+}
+
+.statementWrap > .cdcNoticeTable > tr:first-child{
+  height:53px;
+  border-bottom: #a0a0a0 solid 1.5px;
+  cursor:default;
+}
+
+.statementWrap > .cdcNoticeTable > tr{
+  height:50px;
+  border-bottom: #c3c3c3 solid 1.5px;
+  cursor: pointer;
 }
 
 .statementWrap > .cdcNoticeTable > tbody > tr > .tb_number{
@@ -59,4 +71,9 @@ text-align: left;
 
 .statementWrap > .cdcNoticeTable > tbody > tr > td > a{
     font-family: 'ON-IGothic';
+    text-align: left;
+}
+
+.statementWrap > .cdcNoticeTable > tbody > tr > div.comment> img{
+
 }
