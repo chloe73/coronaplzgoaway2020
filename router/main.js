@@ -1,6 +1,7 @@
 module.exports = function(app, connection)
 {
 	const request = require('request');
+	const puppeteer = require('puppeteer');
 	const key = "5d3ywBHCsVdtChGV7AYGHDjuul8XnbA9FaSDxL3pOqksYUoSAK4WToVw173U3UQK1xRpdHoSlLB51nkxT6Z0Ew%3D%3D";
 
 	function requestAPI(_method, _pageNo, _numOfRow, _startCreateDt, _endCreateDt, _callback){
@@ -158,5 +159,36 @@ module.exports = function(app, connection)
 			res.send(e);
 		}
 	});
+
+	app.get('/getGunpo', function(req, res){
+		var date = req.query.date
+		var mySql_Query;
+		
+		mySql_Query = "SELECT Date,count FROM gunpo;"
+        console.log("mysql_query : ",mySql_Query);
+
+        connection.query(mySql_Query,function(err, rows){
+            if(err) throw err;
+            res.send(rows);
+        })
+	});
+	
+	app.get('/getAllGunpo', async function(req, res) {
+		
+		const browser = await puppeteer.launch();
+		const page = await browser.newPage();
+
+
+		await page.goto('https://www.gunpo.go.kr/www/index.do',{timeout: 0, waitUntil: 'domcontentloaded'});
+
+		const gunpoNum = await page.$eval('.issue_list .issue_item .issue_number', issue_number => issue_number.textContent.trim());
+		console.log(gunpoNum);
+		
+		res.send(gunpoNum)
+
+		await browser.close();
+	})
+
+
 
 }

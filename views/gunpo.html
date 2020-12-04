@@ -1,0 +1,133 @@
+<html lang="en">
+<head>
+    <script>
+        jQuery.ajax({
+            type:"GET",
+            url:"/getGunpo",
+             success: function(Date, count){
+             },
+             error: function(error) {
+                console.log("error", error);
+             }
+        }).done(function(result){
+            console.log(result);
+            renderGraph('군포 확진자 그래프',result)
+        });
+
+        function renderGraph(mode, data){
+            var date = new Array();
+            var count = new Array();
+            var ctx = document.getElementById('gunpoChart').getContext('2d');
+
+
+            // 서버로 부터 받은 데이터의 객체형 배열을 반복문으로 떼내서, 배열에 저장.
+            data.forEach((item, i) => {
+                date.push(item.Date);
+                count.push(item.count);
+            });
+
+            console.log("count : " , count);
+            console.log("data : " , data)
+
+            // 위에서 처리한 데이터를 기준으로 그래프 그리기
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                labels: [
+                    date[9],date[8],date[7],date[6],date[5],date[4],date[3],date[2],date[1],date[0]
+                ],
+                datasets: [{
+                    label: mode,
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [count[9],count[8],count[7],count[6],count[5],count[4],count[3],count[2],count[1],count[0]]
+                }]
+                },
+                // Configuration options go here
+                options: {
+                    legend: {
+                    display: true
+                },
+                scales: {
+                    xAxes: [{
+                        barPercentage: 0.4
+                    }
+                    ]
+                }
+                }
+            });
+        }
+
+        function search(){
+            jQuery.ajax({
+                type: "GET",
+                dataType: "json",
+                url: url,
+                success: function(result){
+                },
+                error: function(error){
+                console.log("error : " , error);
+                }
+            }).done(function(result){
+                console.log("result : " ,result);
+                renderGraph(mode, result);
+            });
+        }
+
+      
+
+        //crawling js 코드 
+        // async function run() {
+        //     const browser = await puppeteer.launch();
+        //     const page = await browser.newPage();
+
+
+        //     await page.goto('https://www.gunpo.go.kr/www/index.do',{timeout: 0, waitUntil: 'domcontentloaded'});
+
+        //     const gunpoNum = await page.$eval('.issue_list .issue_item .issue_number', issue_number => issue_number.textContent.trim());
+        //     console.log(gunpoNum);
+
+        //     await browser.close();
+        //     return gunpoNum
+        // }
+        // var gunpoNum = run()
+
+        // var gunpoAllNum = document.querySelector('gunpoAllNum')
+        // gunpoAllNum.textContent = gunpoNum;
+
+        jQuery.ajax({
+            type:"GET",
+            url:"/getAllGunpo",
+             data: {},
+             success: function(result){
+
+             },
+             error: function(error) {
+                console.log("error", error);
+             }
+        }).done(function(result){
+            console.log(result);
+            var gunpoAllNum = document.querySelector('.gunpoAllNum')
+            gunpoAllNum.textContent = result;
+        });
+
+        search()
+        
+
+    </script>
+</head>
+<body>
+    <div class ="gunpoWrap">
+        <div>
+            <span>군포 달별 확진자</span>
+        </div>
+        <div id="gunpoWrap">
+            <canvas id="gunpoChart"></canvas>
+        </div>
+        <div >
+            <span>군포 총 확진자</span>
+            <span class="gunpoAllNum"></span>
+        </div>
+    </div>
+</body>
+</html>

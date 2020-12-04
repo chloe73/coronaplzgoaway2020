@@ -6,6 +6,10 @@ const dbconfig = require('./config/database.json');
 const mysql = require('mysql');
 const cors = require('cors');
 
+
+
+app.set('json spaces', 2)
+
 const port = 3000;
 
 const data = fs.readFileSync('./config/database.json');
