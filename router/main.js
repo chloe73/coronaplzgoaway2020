@@ -3,7 +3,7 @@ module.exports = function(app,connection)
 
     app.get('/',function(req,res){
         res.render('index.html');
-    })
+    });
 
     app.get('/getAccmulate', function(req, res){
         var date = req.query.date +" 00:00:00";
