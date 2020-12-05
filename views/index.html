@@ -17,9 +17,17 @@
 
     <script>
       sessionStorage.clear();
+      $(document).ready(function(){
+        // index 페이지가 열리면 가장먼저 data 화면을 요청해서 wrap id에 load 한다.
+        $(".wrap").load('/page/data');
+      });
+
+      // 위에 헤더메뉴를 누르면, wrap id에 요청한 화면을 load한다.
       function onPage(value){
         $(".wrap").load('/page/' + value);
-        $(".datepickers-container").hide();     // 선택하고 숨김
+
+        // 페이지 이동할때 달력이 남아있어서 이동할때마다 달력을 숨김.
+        $(".datepickers-container").hide();
       }
     </script>
 </head>
