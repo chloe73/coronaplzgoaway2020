@@ -35,12 +35,13 @@
 }
 
 /* menu */
-
+/* nav */
 #header > div.menu {
     float: right;
 }
 
-.menu > ul >li {
+/* div */
+.menu > ul > li {
     float: left;
     text-align: center;
     width: 150px;
@@ -52,10 +53,15 @@
 .menu > ul >li a {
     display: block;
 }
-.menu > ul >li a:hover {
+/* div */
+.menu > ul > li a:hover {              
     background: rgba(11,34,132,100);
-    color: #fff;
+    color: #ffffff;
     border-radius: 10px;
+}
+
+#Text-color{
+    color: #ffffff;
 }
 
 .wrap{

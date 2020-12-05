@@ -37,27 +37,47 @@
 </head>
 <body>
   <div id="header">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+      <div class="logo navbar-brand">
+          <span>5조</span>
+      </div>
+      <div class="menu" class="clearfix collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item onclick=" onclick="onPage('data')"><a class="nav-link"><span id="Text-color">Data</span></a></li>
+            <li class="nav-item onclick=" onclick="onPage('chart')"><a class="nav-link"> <span id="Text-color">Chart</span></a></li>
+            <li class="nav-item onclick=" onclick="onPage('statement')"><a class="nav-link"> <span id="Text-color">Statement</span></a></li>
+            <li class="nav-item onclick=" onclick="onPage('notice')"><a class="nav-link"> <span id="Text-color">Notice</span></a></li>
+            <li class="nav-item onclick=" onclick="onPage('gunpo')"><a class="nav-link"> <span id="Text-color">gunpo</span></a></li>
+        </ul>
+      </div>
+    </nav>
+    <footer class="text-center page-footer bg-dark fixed-bottom" >
+      <div class="container">
+          <span class="text-white">coronaplzgoaway2020 유순조</span>
+      </div>
+    </footer>
+
     <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <span class="navbar-brand">5조</span>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item"  onclick="onPage('data')">
-            <a class="nav-link" href="#">Data <span class="sr-only">(current)</span></a>
+            <a class="nav-link">Data <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item"  onclick="onPage('chart')">
-            <a class="nav-link" href="#">Chart <span class="sr-only">(current)</span></a>
+            <a class="nav-link">Chart <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item"  onclick="onPage('statement')">
-            <a class="nav-link" href="#">Statement <span class="sr-only">(current)</span></a>
+            <a class="nav-link">Statement <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item"  onclick="onPage('notice')">
-            <a class="nav-link" href="#">Notice <span class="sr-only">(current)</span></a>
+            <a class="nav-link">Notice <span class="sr-only">(current)</span></a>
           </li>
         </ul>   
       </div>
     </nav>
     <div class="wrap">
-        
+
     </div>
     <footer class="text-center page-footer bg-dark fixed-bottom" >
       <div class="container">
@@ -65,7 +85,7 @@
       </div>
     </footer> -->
 
-      <div class="logo">
+      <!-- <div class="logo">
           <span>5조</span>
       </div>
       <div class="menu" class="clearfix">
@@ -74,9 +94,9 @@
               <li onclick="onPage('chart')"><a>Chart</a></li>
               <li onclick="onPage('statement')"><a>Statement</a></li>
               <li onclick="onPage('notice')"><a>Notice</a></li>
-              {# <li onclick="onPage('gunpo')"><a>gunpo</a></li> #}
+              <li onclick="onPage('gunpo')"><a>gunpo</a></li>
           </ul>
-      </div>
+      </div> -->
   </div>
    <div class="wrap">
    </div>
