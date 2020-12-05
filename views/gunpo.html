@@ -111,23 +111,24 @@
             gunpoAllNum.textContent = result;
         });
 
-        search()
+        // search()
         
 
     </script>
 </head>
 <body>
-    <div class ="gunpoWrap">
+    <div class ="gunpWrap">
+        <div class="alert alert-dark" role="alert">
+            <span><h2>군포 총 확진자</h2></span>
+            <strong><h2><span class="gunpoAllNum">확진자수</span></h2></strong>  
+        </div>
         <div>
-            <span>군포 달별 확진자</span>
+            <span id="gunpoNumber"><strong>군포 달별 확진자</strong></span>
         </div>
         <div id="gunpoWrap">
             <canvas id="gunpoChart"></canvas>
         </div>
-        <div >
-            <span>군포 총 확진자</span>
-            <span class="gunpoAllNum"></span>
-        </div>
+        
     </div>
 </body>
 </html>
