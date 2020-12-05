@@ -41,7 +41,7 @@ function getFormatDate(date){
         // Configuration options go here
         options: {
           legend: {
-            display: false,
+            display: true,
           }
         }
       });
@@ -87,6 +87,26 @@ function getFormatDate(date){
 
       <div class="headerContentsWrap">
 
+        <div style="width:90%; height:100%; position:absolute; left:5%;">
+          <div class="contentWrap">
+            <a class="contentTitle">확진환자</a>
+            <a class="contentConfirm">0명</a>
+            <a class="contentCompare">(+25)</a>
+          </div>
+
+          <div class="contentWrap">
+            <a class="contentTitle">검사중</a>
+            <a class="contentConfirm">0명</a>
+            <a class="contentCompare">(+25)</a>
+          </div>
+
+          <div class="contentWrap">
+            <a class="contentTitle">사망자</a>
+            <a class="contentConfirm">0명</a>
+            <a class="contentCompare">(+25)</a>
+          </div>
+        </div>
+
       </div>
   </div>
 
@@ -95,6 +115,21 @@ function getFormatDate(date){
     <div class="dataContentWrap">
       <a>검사현황</a>
       <div class="dataContentSubWrap">
+
+        <table class="dataContentTable">
+          <tr>
+            <td style="color:#0b2284; font-weight:bold;">누적 검사수</td>
+            <td style="color:#000000;">0명</td>
+          </tr>
+          <tr>
+            <td style="color:#0b2284; font-weight:bold;">누적 확진자</td>
+            <td style="color:#000000;">0명</td>
+          </tr>
+          <tr>
+            <td style="color:#0b2284; font-weight:bold;">누적 사망자</td>
+            <td style="color:#000000;">0명</td>
+          </tr>
+        </table>
 
       </div>
     </div>
@@ -108,14 +143,14 @@ function getFormatDate(date){
           <div class="barData" style="background:#0b2284">
             <p style="color:#ffffff">확진</p>
           </div>
-          <a>(0000명)</a>
+          <a>(0명)</a>
         </div>
 
         <div class="dataWrap">
           <div class="barData" style="background:#d3d3d3">
             <p style="color:#3d3d3d">검사중</p>
           </div>
-          <a >(0000명)</a>
+          <a >(0명)</a>
         </div>
       </div>
     </div>
