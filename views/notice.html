@@ -1,3 +1,72 @@
+<head>
+  <script>
+    function loadPage(id){
+      // 서버에 id를 보낸다.
+      console.log("@!!");
+      $(".wrap").load('/page/statement_comment', function(data){
+        console.log("data : " , data);
+      })
+    }
+  </script>
+</head>
+
 <div class="dataWrap">
-  <a>123123</a>
+  <div class="sideMenu">
+    <ul>
+      <li><a>공지사항</a></li>
+      <li><a>질병관리본부 KCDC</a></li>
+      <li><a>코로나 감염증-19</a></li>
+    </ul>
+  </div>
+
+  <div class="noticeContents">
+    <div class="header">
+      <img class="cdc_logo" src="/images/cdc_logo.png"/>
+    </div>
+
+    <table class="cdcNoticeTable">
+      <tr class="title">
+        <th class="tb_number">번호</th>
+        <th class="tb_title">제목</th>
+        <th class="tb_writer">작성자</th>
+        <th class="tb_date">작성일자</th>
+      </tr>
+      <tr class="list" onclick="loadPage(7)">
+        <td class="tb_number"><a>6</a></td>
+        <td class="tb_title"><a>코로나19 혈장치료제 개발을 위한 혈액공여자 모집안내</a></td>
+        <td class="tb_writer"><a>신종감염병매개체연구과</a></td>
+        <td class="tb_date"><a>2020-06-01</a></td>
+      </tr>
+      <tr class="list" onclick="loadPage(7)">
+        <td class="tb_number"><a>5</a></td>
+        <td class="tb_title"><a>코로나19 유전자검출검사 긴급사용승인 제품정보</a></td>
+        <td class="tb_writer"><a>감염병진단관리과</a></td>
+        <td class="tb_date"><a>2020-03-18</a></td>
+      </tr>
+      <tr class="list" onclick="loadPage(7)">
+        <td class="tb_number"><a>4</a></td>
+        <td class="tb_title"><a>코로나바이러스감염즘-19 시신에 대한 장사방법 및 절차 고시 제정(안) 공지</a></td>
+        <td class="tb_writer"><a>신종감염병매개체연구과</a></td>
+        <td class="tb_date"><a>2020-02-25</a></td>
+      </tr>
+      <tr class="list" onclick="loadPage(7)">
+        <td class="tb_number"><a>3</a></td>
+        <td class="tb_title"><a>'코로나바이러스감염증-19대응실험실 생물안전 가이드 제2판' 개정안내</a></td>
+        <td class="tb_writer"><a>생물안전평가과</a></td>
+        <td class="tb_date"><a>2020-01-31</a></td>
+      </tr>
+      <tr class="list" onclick="loadPage(7)">
+        <td class="tb_number"><a>2</a></td>
+        <td class="tb_title"><a>중동호흡기증후군 코로나바이러스(MERS-CoV) 생물안전정보</a></td>
+        <td class="tb_writer"><a>생물안전평가과</a></td>
+        <td class="tb_date"><a>2013-06-17</a></td>
+      </tr>
+      <tr class="list" onclick="loadPage(7)">
+        <td class="tb_number"><a>1</a></td>
+        <td class="tb_title"><a>국외 신종 코로나바이러스 발생에 따른 감시 강화</a></td>
+        <td class="tb_writer"><a>감염병감시과</a></td>
+        <td class="tb_date"><a>2012-09-26</a></td>
+      </tr>
+    </table>
+  </div>
 </div>
