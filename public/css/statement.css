@@ -1,6 +1,63 @@
 .dataWrap {
-    height:100%;
-    width:100%;
-    background:#c2c2c2;
+  position: relative;
+  width:80%;
+  height: 100%;
+}
+
+.statementWrap > .header{
+  position: absolute;
+  top:30px;
+  left:5%;
+  width:90%;
+  height:70px;
+  border-bottom: #c2c2c2 solid 1px;
+}
+.statementWrap > .header > p{
+  position: absolute;
+  float:left;
+  height:70px;
+  line-height: 70px;
+  font-size: 25px;
+  font-family: 'ON-IGothic',AppleGothic,sans-serif;
+}
+
+.statementWrap > .cdcNoticeTable {
+    font-family: 'ON-IGothic',AppleGothic,sans-serif;
+    position: absolute;
+    top:160px;
+    width:80%;
+    left:10%;
+    text-align: center;
+    border-top: #000000 solid 2px;
+}
+.statementWrap > .cdcNoticeTable > tbody > tr{
+  cursor: pointer;
+}
+.statementWrap > .cdcNoticeTable > tbody > tr.title{
+  height:53px;
+  border-bottom: #a0a0a0 solid 1.5px;
+}
+
+.statementWrap > .cdcNoticeTable > tbody > tr.list{
+  height:50px;
+  border-bottom: #c3c3c3 solid 1.5px;
+}
+
+.statementWrap > .cdcNoticeTable > tbody > tr > .tb_number{
+  width:10%;
+}
+
+.statementWrap > .cdcNoticeTable > tbody > tr > .tb_title{
+  width:70%;
+}
+.statementWrap > .cdcNoticeTable > tbody > tr > td.tb_title{
+text-align: left;
+}
+.statementWrap > .cdcNoticeTable > tbody > tr > .tb_date{
+  width:20%;
+}
+
+.statementWrap > .cdcNoticeTable > tbody > tr > td > a{
+    font-family: 'ON-IGothic';
   }
   
