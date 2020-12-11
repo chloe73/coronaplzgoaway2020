@@ -1,0 +1,29 @@
+<head>
+    <script>
+      history.pushState(null, null, location.href);
+      window.onpopstate = function(event) {
+        $(".wrap").load('/page/statement')
+      };
+  
+      function loadPage(id){
+  
+      }
+    </script>
+  </head>
+  
+  <div class="statementWrap">
+  <div class="header">
+    <img class="cdc_logo" src="/images/cdc_logo.png"/>
+  
+    <p> 코로나관련 공지사항 </p>
+  </div>
+  
+  <table class="cdcNoticeTable">
+    <tr class="title">
+      <th class="tb_number">번호</th>
+      <th class="tb_title">제목</th>
+      <th class="tb_writer">작성자</th>
+      <th class="tb_date">작성일자</th>
+    </tr>
+  </table>
+  </div>
