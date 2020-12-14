@@ -1,6 +1,6 @@
 <head>
   <script>
-    getRequest(1);
+    getRequest(1); // 게시물의 첫번째 페이지를 호출한다.
 
     // statement 한줄을 클릭하면 호출된다 => 내용 화면으로 이동
     function loadComment(id){
@@ -11,21 +11,23 @@
 
     // 서버로 팩트체크의 데이터 요청
     function getRequest(page){
-      $(".stateTable").empty();
-      $(".pageIndex").empty();
-      $(".stateTable").append("<tr class='title'></tr>");
-      $(".title").append("<th class='tb_number'>번호</th>");
-      $(".title").append("<th class='tb_title'>제목</th>");
-      $(".title").append("<th class='tb_date'>작성일자</th>");
+      $(".stateTable").empty();       // 이 함수(getRequest())가 호출될때마다 그려진 게시물을 먼저 지운다(2번 누르면 띄워져있는거 삭제후 2번에 해당하는 게시물을 가져오는 원리)
+      $(".pageIndex").empty();        // 이 함수(getRequest())가 호출될때마다 그려진 페이지 이동숫자를 먼저 지운다
+      $(".stateTable").append("<tr class='title'></tr>");     // 게시물 테이블의 첫번째줄을 그린다
+      $(".title").append("<th class='tb_number'>번호</th>");  //  테이블 첫번째 줄의 '번호' 추가
+      $(".title").append("<th class='tb_title'>제목</th>");   //  테이블 첫번째 줄의 '제목' 추가
+      $(".title").append("<th class='tb_date'>작성일자</th>"); // 테이블 첫번째 줄의 '작성일자' 추가
+
+      // Jquery를 통해서 NodeJS 서버에 statement 데이터를 요청한다.
       jQuery.ajax({
          type: "GET",
          url: "/getTitle",
          data: {
-           table : "statement_table",
-           page : page
+           table : "statement_table",   // 요청하고자 하는 DB의 테이블 이름
+           page : page                  // 요청하고자 하는 페이지수
          },
          success: function(result){
-           if(!$("tbody").length)  $(".stateTable").append("<tbody></tbody>");
+           if(!$("tbody").length)  $(".stateTable").append("<tbody></tbody>");               // 테이블구조에 tbody가 없으면 그리라는건데, 중요한내용은 아님.
            console.log("result : " ,result);
            // statement DB에 등록된 제목 개수만큼 반복해서 html Table을 그린다.
            (result.rows).forEach((item, i) => {
@@ -37,6 +39,7 @@
          },
          error: function(error){console.log("error : " , error);}
       }).done(function(result){
+        // 서버에서 처리하는 게시물 페이지의 개수에 따라 이동 페이지의 개수를 정한다. (한 페이지당 10개씩 처리중. 예를들어 게시물이 11개라면 페이지는 2개)
         var length = result.count;
         $(".statementWrap").append("<div class='pageIndex'></div>");
         for(var index = 1; index <= (length/10)+1; index++){
@@ -64,7 +67,7 @@
 
 <div class="statementWrap">
   <div class="header">
-    <p>코로나19팩트</p>
+    <p>코로나19 팩트체크</p>
   </div>
 
   <table class="stateTable">

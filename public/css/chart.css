@@ -6,7 +6,9 @@ div.chatWrap > #selectWrap{
   width:20%;
   position: absolute;
   left:40%;
+  height: auto;
   margin-top: 2%;
+  background: #c0c0c0;
 }
 
 div.chatWrap > #chartWrap {
