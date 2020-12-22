@@ -4,7 +4,7 @@
         jQuery.ajax({
             type:"GET",
             url:"/getGunpo",
-             success: function(CMonth, count){
+             success: function(Date, count){
              },
              error: function(error) {
                 console.log("error", error);
@@ -22,7 +22,7 @@
 
             // 서버로 부터 받은 데이터의 객체형 배열을 반복문으로 떼내서, 배열에 저장.
             data.forEach((item, i) => {
-                date.push(item.CMonth);
+                date.push(item.Date);
                 count.push(item.count);
             });
 

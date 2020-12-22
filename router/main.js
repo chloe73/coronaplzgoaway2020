@@ -164,7 +164,7 @@ module.exports = function(app, connection)
 		var date = req.query.date
 		var mySql_Query;
 		
-		mySql_Query = "SELECT CMonth,count FROM gunpo;"
+		mySql_Query = "SELECT Date,count FROM gunpo;"
         console.log("mysql_query : ",mySql_Query);
 
         connection.query(mySql_Query,function(err, rows){
