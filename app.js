@@ -2,9 +2,10 @@ const fs = require('fs');
 const express = require('express')
 const app = express();
 const bodyParser = require('body-parser');
-const dbconfig = require('./config/database.json');
+
 const mysql = require('mysql');
 const cors = require('cors');
+const db = require('./config/database');
 
 
 
@@ -12,16 +13,15 @@ app.set('json spaces', 2)
 
 const port = 3000;
 
-const data = fs.readFileSync('./config/database.json');
-const conf = JSON.parse(data);
+
 let connection;
 function handleDisconnect(){
   connection = mysql.createConnection({
-    host : conf.host,
-    user: conf.user,
-    password: conf.password,
-    port : conf.port,
-    database : conf.database
+    host : db.host,
+    user: db.user,
+    password: db.password,
+    port : db.port,
+    database : db.database
   });
 
   connection.connect(function(err){
